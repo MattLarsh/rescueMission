@@ -8,7 +8,7 @@ var startGame = function(){
   var svgNS = "http://www.w3.org/2000/svg";
   var structure = {};
   var weapon = {};
-  structure.top = 'right';
+  
   function createLineElement(x1,x2,y1,y2,strWdth,color) {
     var newLine = document.createElementNS(svgNS,"line");
     newLine.setAttributeNS(null,"x1",x1);	
@@ -342,35 +342,55 @@ var startGame = function(){
     boardObjectsArr[17].dy2 = 1.25;
     boardObjectsArr[17].dx1 = -2;
     boardObjectsArr[17].dx2 = -2;
-    boardObjectsArr[18].dy1 = 2;
+    boardObjectsArr[18].dy1 = 1.5;
     boardObjectsArr[18].dy2 = 1.25;
-    boardObjectsArr[18].dx1 = -1;
-    boardObjectsArr[18].dx2 = -1;
+    boardObjectsArr[18].dx1 = 0;
+    boardObjectsArr[18].dx2 = -3;
     boardObjectsArr[19].dy1 = 1.25;
     boardObjectsArr[19].dy2 = 1.25;
-    boardObjectsArr[19].dx1 = -1;
-    boardObjectsArr[19].dx2 = -1;
-    
+    boardObjectsArr[19].dx1 = -3;
+    boardObjectsArr[19].dx2 = -3;
+    for(var i=0;i<hostageLineObjects.length;i++){
+      hostageLineObjects[i].dx1 = -3;
+      hostageLineObjects[i].dx2 = -3;
+      hostageLineObjects[i].dy1 = 1.25;
+      hostageLineObjects[i].dy2 = 1.25;
+    }
+    for(var i=0;i<hostageRoundObjects.length;i++){
+      hostageRoundObjects[i].dx = -3;
+      hostageRoundObjects[i].dy = 1.25;
+    }
   }
   function structureHitTop1(){
-    structure.top = 'left';
-    
-    if(structure.top === 'left'){
-      boardObjectsArr[18].dx2 = -2;
-      boardObjectsArr[19].dx1 = -2;
-      boardObjectsArr[19].dx2 = -2;
-      for(var i=0;i<hostageLineObjects.length;i++){
-        hostageLineObjects[i].dx1 = -2;
-        hostageLineObjects[i].dx2 = -2;
-      }
-      for(var i=0;i<hostageRoundObjects.length;i++){
-        hostageRoundObjects[i].dx = -2;
-      }
+    boardObjectsArr[18].dx2 = -3;
+    boardObjectsArr[19].dx1 = -3;
+    boardObjectsArr[19].dx2 = -3;
+    for(var i=0;i<hostageLineObjects.length;i++){
+      hostageLineObjects[i].dx1 = -3;
+      hostageLineObjects[i].dx2 = -3;
+    }
+    for(var i=0;i<hostageRoundObjects.length;i++){
+      hostageRoundObjects[i].dx = -3;
     }
     if(boardObjectsArr[18].x2 < 892){
-      structure.top = 'center';
       boardReset();
       structure.hit = 1.1;
+    }
+  }
+  function structureHitTop2(){
+    boardObjectsArr[18].dx2 = 10;
+    boardObjectsArr[19].dx1 = 10;
+    boardObjectsArr[19].dx2 = 10;
+    for(var i=0;i<hostageLineObjects.length;i++){
+      hostageLineObjects[i].dx1 = 10;
+      hostageLineObjects[i].dx2 = 10;
+    }
+    for(var i=0;i<hostageRoundObjects.length;i++){
+      hostageRoundObjects[i].dx = 10;
+    }
+    if(boardObjectsArr[19].x1 > 890){
+      boardReset();
+      structure.hit = 2.2;
     }
   }
   
@@ -384,9 +404,12 @@ var startGame = function(){
     for(var i=0;i<hostageLineObjects.length;i++){
       hostageLineObjects[i].dx1 = 0;
       hostageLineObjects[i].dx2 = 0;
+      hostageLineObjects[i].dy1 = 0;
+      hostageLineObjects[i].dy2 = 0;
     }
     for(var i=0;i<hostageRoundObjects.length;i++){
       hostageRoundObjects[i].dx = 0;
+      hostageRoundObjects[i].dy = 0;
     }
   }
   // Begin of Weapon Weapon Weapon ///////////
@@ -447,13 +470,14 @@ var startGame = function(){
   trigger();
   var ball1 = createBallElement(200,500,12.5,'white');
   var ball2 = createBallElement(175,500,12.5,'white');
+  var ball3 = createBallElement(150,500,12.5,'white');
   weapon.whichBall = 0;
   var ball1Obj = createBallObj(ball1);
   var ball2Obj = createBallObj(ball2);
-  var ballObjects = [ball1Obj,ball2Obj];
-  var ballEleArr = [ball1,ball2]
+  var ball3Obj = createBallObj(ball3);
+  var ballObjects = [ball1Obj,ball2Obj,ball3Obj];
+  var ballEleArr = [ball1,ball2,ball3];
   // End of Weapon Weapon Weapon ///////////////
-  // fireBall();
   structure.hit = 0;
 
   var viewWidth = view.width;
@@ -469,6 +493,8 @@ var startGame = function(){
     for(var i=0;i<hostageLineObjects.length;i++){
       hostageLineObjects[i].x1 += hostageLineObjects[i].dx1;
       hostageLineObjects[i].x2 += hostageLineObjects[i].dx2;
+      hostageLineObjects[i].y1 += hostageLineObjects[i].dy1;
+      hostageLineObjects[i].y2 += hostageLineObjects[i].dy2;
     }
     for(var i=0;i<bloodObjArr.length;i++){
       bloodObjArr[i].cx += bloodObjArr[i].dx;
@@ -500,7 +526,7 @@ var startGame = function(){
     }
     
     if(structure.hit === 1){
-      if(boardObjectsArr[0].x1 < 840){
+      if(boardObjectsArr[weapon.whichBall -1].x1 < 840){
         structureHit1();
       }
       else{
@@ -513,14 +539,19 @@ var startGame = function(){
     }
     
     if(structure.hit === 2.1){
-      // console.log(boardObjectsArr[1].x1);
-      if(boardObjectsArr[1].x1 < 940){
+      if(boardObjectsArr[weapon.whichBall -1].x1 < 940){
         structureHit2();
       }
       else{
         boardReset();
-        structure.hit = 'top1';
+        structure.hit = 'top2';
       }
+    }
+    if(structure.hit === 'top2'){
+      structureHitTop2();
+    }
+    if(structure.hit === 2.2){
+      console.log('hi');
     }
     
     
