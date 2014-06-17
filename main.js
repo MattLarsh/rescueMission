@@ -222,10 +222,8 @@ var startGame = function(){
 
   // End of hostage
 
-  // Begin of weapon
-  weapon.ball1 = createBallElement(175,500,12.5,'white');
-  var ball1Obj = createBallObj(weapon.ball1);
-  var ballObjects = [ball1Obj];
+  
+
   function explodeHostage(){
     var x;
     for(var i=0;i<hostageRoundObjects.length;i++){
@@ -341,19 +339,23 @@ var startGame = function(){
       hostageRoundObjects[i].dx = 0;
     }
   }
+  // Begin of Weapon Weapon Weapon ///////////
+  
+
+ 
   function fireBall(){
-    ballObjects[0].dx = 10;
+    ballObjects[weapon.whichBall].dx = 10;
+    
   }
-  var ballArr = [];
+  var smallBallArr = [];
   var ballObjArr = [];
   function buildSmallBalls(){
-    
     for(var i=0;i<25;i++){
-      ballArr[i] = createElipseElement(816,500,3,3,'white');
+      smallBallArr[i] = createElipseElement(816,500,3,3,'white');
     }
     
     for(var i=0;i<25;i++){
-      ballObjArr[i] = createElipseObj(ballArr[i]);
+      ballObjArr[i] = createElipseObj(smallBallArr[i]);
     }
   }
 
@@ -378,17 +380,31 @@ var startGame = function(){
     }
   }
   function removeBall(){
-    for(var key in weapon){
-      weapon[key].remove();
-    }
+    ballEleArr[weapon.whichBall].remove();
   }
   function removeSmallBalls(){
-    for(var i=0;i<ballArr.length;i++){
-      ballArr[i].remove();
+    for(var i=0;i<smallBallArr.length;i++){
+      smallBallArr[i].remove();
     }
   }
-  fireBall();
+  function trigger(){
+    var trigger  = createElipseElement(55,500,20,15,'red');
+    trigger.onclick = function(){
+      fireBall();
+    }
+  }
+  trigger();
+  var ball1 = createBallElement(200,500,12.5,'white');
+  var ball2 = createBallElement(175,500,12.5,'white');
+  weapon.whichBall = 0;
+  var ball1Obj = createBallObj(ball1);
+  var ball2Obj = createBallObj(ball2);
+  var ballObjects = [ball1Obj,ball2Obj];
+  var ballEleArr = [ball1,ball2]
+  // End of Weapon Weapon Weapon ///////////////
+  // fireBall();
   structure.hit = 0;
+
   var viewWidth = view.width;
   var viewHeight = view.height;
   var animate = function(){
@@ -416,20 +432,23 @@ var startGame = function(){
       boardObjectsArr[i].y2 += boardObjectsArr[i].dy2;
     }
     for(var i=0;i<ballObjects.length;i++){
-        ballObjects[i].cx += ballObjects[i].dx;
-    }
-    if(ballObjects[0].cx > 820 && structure.hit === 0){
-      structure.hit = 1;
-      buildSmallBalls();
-      removeBall();
-      ballExplode();
-      setTimeout(removeSmallBalls,2500);
+      ballObjects[i].cx += ballObjects[i].dx;
 
+    }
+    if(ballObjects[weapon.whichBall] != undefined){
+      if(ballObjects[weapon.whichBall].cx > 820){
+
+        structure.hit = 1;
+        buildSmallBalls();
+        removeBall();
+        weapon.whichBall++;
+        ballExplode();
+        setTimeout(removeSmallBalls,500);
+      }
     }
     if(structure.hit === 1){
       if(boardObjectsArr[0].x1 < 840){
         structureHit1();
-        
       }
       else{
         boardReset();
