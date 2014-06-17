@@ -85,7 +85,7 @@ var startGame = function(){
   var boardTopObj5 = createLineObject(boardEleTop5);
   var boardObj14 = createLineObject(boardEle14);
   var boardTopObj6 = createLineObject(boardEleTop6);
-  var boardObjectsArr = [boardObj1,boardObj2,boardObj3,boardObj4,boardTopObj1,boardObj5,boardObj6,boardObj7,boardObj8,boardTopObj3,boardObj9,boardObj10,boardObj11,boardTopObj4,boardObj12,boardObj13,boardTopObj5,boardObj14,boardTopObj6];
+  var boardObjectsArr = [boardObj1,boardObj2,boardObj3,boardObj4,boardTopObj1,boardTopObj2,boardObj5,boardObj6,boardObj7,boardObj8,boardTopObj3,boardObj9,boardObj10,boardObj11,boardTopObj4,boardObj12,boardObj13,boardTopObj5,boardObj14,boardTopObj6];
 
   function createBallElement(cx,cy,r,color) {
     var newBall = document.createElementNS(svgNS,"circle");
@@ -272,25 +272,25 @@ var startGame = function(){
     boardObjectsArr[3].dx1 = 1.3;
     boardObjectsArr[4].dx1 = -1;
     boardObjectsArr[4].dx2 = -1;
-    boardObjectsArr[5].dx1 = 2.2;
-    boardObjectsArr[5].dx2 = 2.2;
-    boardObjectsArr[6].dx1 = -3;
-    boardObjectsArr[7].dx1 = 1.3;
-    boardObjectsArr[8].dx1 = -1;
-    boardObjectsArr[9].dx1 = 1;
-    boardObjectsArr[9].dx2 = 1;
-    boardObjectsArr[10].dx1 = 1.25;
-    boardObjectsArr[11].dx1 = -2;
-    boardObjectsArr[12].dx1 = 1.45;
-    boardObjectsArr[13].dx1 = 1.25;
-    boardObjectsArr[13].dx2 = 1.25;
-    boardObjectsArr[14].dx1 = -2;
-    boardObjectsArr[15].dx1 = -1.4;
-    boardObjectsArr[16].dx1 = 1.4;
-    boardObjectsArr[16].dx2 = 1.4;
-    boardObjectsArr[17].dx2 = 2;
-    boardObjectsArr[18].dx1 = 2;
+    boardObjectsArr[6].dx1 = 2.2;
+    boardObjectsArr[6].dx2 = 2.2;
+    boardObjectsArr[7].dx1 = -3;
+    boardObjectsArr[8].dx1 = 1.3;
+    boardObjectsArr[9].dx1 = -1;
+    boardObjectsArr[10].dx1 = 1;
+    boardObjectsArr[10].dx2 = 1;
+    boardObjectsArr[11].dx1 = 1.25;
+    boardObjectsArr[12].dx1 = -2;
+    boardObjectsArr[13].dx1 = 1.45;
+    boardObjectsArr[14].dx1 = 1.25;
+    boardObjectsArr[14].dx2 = 1.25;
+    boardObjectsArr[15].dx1 = -2;
+    boardObjectsArr[16].dx1 = -1.4;
+    boardObjectsArr[17].dx1 = 1.4;
+    boardObjectsArr[17].dx2 = 1.4;
     boardObjectsArr[18].dx2 = 2;
+    boardObjectsArr[19].dx1 = 2;
+    boardObjectsArr[19].dx2 = 2;
     for(var i=0;i<hostageLineObjects.length;i++){
       hostageLineObjects[i].dx1 = 2;
       hostageLineObjects[i].dx2 = 2;
@@ -300,13 +300,65 @@ var startGame = function(){
     }
     
   }
+  function structureHit2(){
+    boardObjectsArr[0].dx1 = 8;
+    boardObjectsArr[0].dx2 = 2;
+    boardObjectsArr[0].dy1 = 2.5;
+    boardObjectsArr[1].dx1 = 5;
+    boardObjectsArr[1].dy1 = 2.5;
+    boardObjectsArr[2].dx1 = -7.5;
+    boardObjectsArr[2].dx2 = -0.25;
+    boardObjectsArr[2].dy2 = -1;
+    boardObjectsArr[2].dy1 = 1.25;
+    boardObjectsArr[3].dx1 = -1;
+    boardObjectsArr[4].dy1 = 3;
+    boardObjectsArr[5].dx1 = 3;
+    boardObjectsArr[5].dx2 = 3;
+    boardObjectsArr[6].dy2 = 8;
+    boardObjectsArr[6].dy1 = 8;
+    boardObjectsArr[7].dy2 = 1.4;
+    boardObjectsArr[7].dy1 = 1.4;
+    boardObjectsArr[7].dx2 = -3;
+    boardObjectsArr[7].dx1 = 0;
+    boardObjectsArr[8].dy2 = 8;
+    boardObjectsArr[8].dy1 = 8;
+    boardObjectsArr[9].dx2 = 2;
+    boardObjectsArr[9].dx1 = 2;
+    boardObjectsArr[10].dy1 = 1.4;
+    boardObjectsArr[11].dy2 = 1.4;
+    boardObjectsArr[11].dy1 = 1.4;
+    boardObjectsArr[11].dx2 = 1;
+    boardObjectsArr[12].dy1 = 10;
+    boardObjectsArr[12].dy2 = 10;
+    boardObjectsArr[13].dy1 = 1;
+    boardObjectsArr[13].dy2 = 1;
+    boardObjectsArr[14].dy1 = 2;
+    boardObjectsArr[14].dy2 = 0.75;
+    boardObjectsArr[15].dy1 = 2;
+    boardObjectsArr[15].dy2 = 2;
+    boardObjectsArr[16].dy1 = 1.25;
+    boardObjectsArr[16].dy2 = 1.25;
+    boardObjectsArr[17].dy1 = 2;
+    boardObjectsArr[17].dy2 = 1.25;
+    boardObjectsArr[17].dx1 = -2;
+    boardObjectsArr[17].dx2 = -2;
+    boardObjectsArr[18].dy1 = 2;
+    boardObjectsArr[18].dy2 = 1.25;
+    boardObjectsArr[18].dx1 = -1;
+    boardObjectsArr[18].dx2 = -1;
+    boardObjectsArr[19].dy1 = 1.25;
+    boardObjectsArr[19].dy2 = 1.25;
+    boardObjectsArr[19].dx1 = -1;
+    boardObjectsArr[19].dx2 = -1;
+    
+  }
   function structureHitTop1(){
     structure.top = 'left';
     
     if(structure.top === 'left'){
-      boardObjectsArr[17].dx2 = -2;
-      boardObjectsArr[18].dx1 = -2;
       boardObjectsArr[18].dx2 = -2;
+      boardObjectsArr[19].dx1 = -2;
+      boardObjectsArr[19].dx2 = -2;
       for(var i=0;i<hostageLineObjects.length;i++){
         hostageLineObjects[i].dx1 = -2;
         hostageLineObjects[i].dx2 = -2;
@@ -315,12 +367,10 @@ var startGame = function(){
         hostageRoundObjects[i].dx = -2;
       }
     }
-    if(boardObjectsArr[17].x2 < 892){
+    if(boardObjectsArr[18].x2 < 892){
       structure.top = 'center';
-      structure.hit = 14;
       boardReset();
-      // explodeHostage();
-      // hostageBlood();
+      structure.hit = 1.1;
     }
   }
   
@@ -387,6 +437,7 @@ var startGame = function(){
       smallBallArr[i].remove();
     }
   }
+  var fireCount = 0;
   function trigger(){
     var trigger  = createElipseElement(55,500,20,15,'red');
     trigger.onclick = function(){
@@ -407,6 +458,8 @@ var startGame = function(){
 
   var viewWidth = view.width;
   var viewHeight = view.height;
+  // explodeHostage();
+  // hostageBlood();
   var animate = function(){
     for(var i=0;i<hostageRoundObjects.length;i++){
       hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
@@ -435,10 +488,9 @@ var startGame = function(){
       ballObjects[i].cx += ballObjects[i].dx;
 
     }
-    if(ballObjects[weapon.whichBall] != undefined){
+    if(ballObjects[weapon.whichBall] != undefined ){
       if(ballObjects[weapon.whichBall].cx > 820){
-
-        structure.hit = 1;
+        structure.hit++;
         buildSmallBalls();
         removeBall();
         weapon.whichBall++;
@@ -446,6 +498,7 @@ var startGame = function(){
         setTimeout(removeSmallBalls,500);
       }
     }
+    
     if(structure.hit === 1){
       if(boardObjectsArr[0].x1 < 840){
         structureHit1();
@@ -458,6 +511,18 @@ var startGame = function(){
     if(structure.hit === 'top1'){
       structureHitTop1();
     }
+    
+    if(structure.hit === 2.1){
+      // console.log(boardObjectsArr[1].x1);
+      if(boardObjectsArr[1].x1 < 940){
+        structureHit2();
+      }
+      else{
+        boardReset();
+        structure.hit = 'top1';
+      }
+    }
+    
     
    
     
