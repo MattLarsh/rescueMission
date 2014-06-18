@@ -20,7 +20,19 @@ var startGame = function(){
     document.getElementById("field").appendChild(newLine);
     return newLine;
   }
-
+  function createRectElement(width,height,x,y,opacity,fill,rx) {
+    var newRect = document.createElementNS(svgNS,"rect");
+    newRect.setAttributeNS(null,"width",width); 
+    newRect.setAttributeNS(null,"height",height);    
+    newRect.setAttributeNS(null,"x",x);   
+    newRect.setAttributeNS(null,"y",y);  
+    newRect.setAttributeNS(null,"fill-opacity",opacity);    
+    newRect.setAttributeNS(null,"fill",fill);
+    newRect.setAttributeNS(null,"rx",rx);
+    document.getElementById("field").appendChild(newRect);
+    return newRect;
+  }
+  
   var boardEle1 = createLineElement(820,820,450,550,10,'brown');
   var boardEle2 = createLineElement(870,870,450,550,10,'brown');
   var boardEle3 = createLineElement(920,920,450,550,10,'brown');
@@ -119,11 +131,8 @@ var startGame = function(){
       get: function(){return e.r.baseVal.value},
       set: function(val){e.r.baseVal.value = val; update();}
     });
-
     update();
-
     return r;
-
   }
 
   var createElipseObj = function(e){
@@ -150,26 +159,48 @@ var startGame = function(){
     return r;
   };
 
-  function createElipseElement(cx,cy,rx,ry,color) {
+  function createElipseElement(cx,cy,rx,ry,color,opacity,stroke) {
     var newElipse = document.createElementNS(svgNS,"ellipse");
     newElipse.setAttributeNS(null,"cx",cx);  
     newElipse.setAttributeNS(null,"cy",cy);    
     newElipse.setAttributeNS(null,"rx",rx);  
     newElipse.setAttributeNS(null,"ry",ry);    
-    newElipse.setAttributeNS(null,"fill",color);   
+    newElipse.setAttributeNS(null,"fill",color);
+    newElipse.setAttributeNS(null,"fill-opacity",opacity); 
+    newElipse.setAttributeNS(null,"stroke",stroke);    
     document.getElementById("field").appendChild(newElipse);
     return newElipse;
   }
+  function createTextElement(x,y,fontSize,textAnchor,opacity,color,text) {
+    var newText = document.createElementNS(svgNS,"text");
+    newText.setAttributeNS(null,"x",x);    
+    newText.setAttributeNS(null,"y",y);  
+    newText.setAttributeNS(null,"font-size",fontSize);
+    newText.setAttributeNS(null,"text-anchor",textAnchor);
+    newText.setAttributeNS(null,"fill-opacity",opacity);    
+    newText.setAttributeNS(null,"fill",color);
+    var textNode = document.createTextNode(text);
+    newText.appendChild(textNode);
+    document.getElementById("field").appendChild(newText);
+    return newText
+  }
+  // <text x="50" y="10" style="writing-mode: tb; glyph-orientation-vertical: 0;
+  //                             letter-spacing: -3;">
+  //   Vertical
+  // </text>
+  
   var hostage = {};
   //Start blood
   var bloodEleArr = [];
-
-  for(var i=0;i<200;i++){
-    bloodEleArr[i] = createElipseElement(894,95,5,5,'red');
-  }
   var bloodObjArr = [];
-  for(var i=0;i<200;i++){
-    bloodObjArr[i] = createElipseObj(bloodEleArr[i]);
+  function createBlood(){
+    for(var i=0;i<200;i++){
+      bloodEleArr[i] = createElipseElement(921,346,5,5,'red');
+    }
+    
+    for(var i=0;i<200;i++){
+      bloodObjArr[i] = createElipseObj(bloodEleArr[i]);
+    }
   }
   function hostageBlood(){
     var x;
@@ -201,7 +232,7 @@ var startGame = function(){
   hostage.leftEyeEle = createElipseElement(894,97,8,10,'white');
   hostage.rightEyeEle = createElipseElement(906,97,8,10,'white');
   hostage.leftEyeColorEle = createElipseElement(894,95,1.5,1.5,'#1E181A');
-  hostage.rightEyeColorEle = createElipseElement(906,95,1.5,1.5,'#1E181A');
+  hostage.rightEyeColorEle = createElipseElement(907,95,1.5,1.5,'#1E181A');
   hostage.hair1Ele = createLineElement(858,905,104,70,15,'#FFFF01');
   hostage.hair2Ele = createLineElement(900,944,69,110,15,'#FFFF01');
   hostage.mouthEle = createElipseElement(902,112,4,4,'#1E181A');
@@ -228,10 +259,10 @@ var startGame = function(){
     var x;
     for(var i=0;i<hostageRoundObjects.length;i++){
       if(Math.random() > 0.5){
-        x = 7;
+        x = 14;
       }
       else{
-        x = -7;
+        x = -14;
       }
       hostageRoundObjects[i].dx = x * Math.random();
       hostageRoundObjects[i].dy = x * Math.random();
@@ -248,16 +279,17 @@ var startGame = function(){
     }
     setTimeout(removeHostage,2500);
   }
+  
   function removeHostage(){
     for(var key in hostage){
       hostage[key].remove();
     }
+    
     for(var i=0;i<bloodEleArr.length;i++){
+
       bloodEleArr[i].remove();
     }
-    hostageRoundObjects = [];
-    bloodObjArr = [];
-    hostageLineObjects = [];
+    
   }
   // setTimeout(explodeHostage,2000);
   // setTimeout(hostageBlood,2000);
@@ -361,6 +393,48 @@ var startGame = function(){
       hostageRoundObjects[i].dy = 1.25;
     }
   }
+  function structureHit3(){
+    boardObjectsArr[2].dy1 = 10;
+    boardObjectsArr[2].dx1 = -3;
+    boardObjectsArr[3].dx1 = 12;
+    boardObjectsArr[3].dy1 = 10;
+    boardObjectsArr[12].dy1 = 10;
+    boardObjectsArr[12].dx1 = 12;
+    boardObjectsArr[4].dy1 = 10;
+    boardObjectsArr[4].dy2 = 8;
+    boardObjectsArr[5].dy1 = 11;
+    boardObjectsArr[5].dy2 = 6;
+    boardObjectsArr[7].dy1 = 12;
+    boardObjectsArr[7].dy2 = 12;
+    boardObjectsArr[9].dy1 = 12;
+    boardObjectsArr[9].dy2 = 12;
+    boardObjectsArr[10].dy1 = 12;
+    boardObjectsArr[10].dy2 = 12;
+    boardObjectsArr[11].dy1 = 20;
+    boardObjectsArr[11].dy2 = 10;
+    boardObjectsArr[11].dx1 = 21;
+    boardObjectsArr[13].dy2 = 11;
+    boardObjectsArr[13].dy1 = 20;
+    boardObjectsArr[13].dx1 = 12;
+    boardObjectsArr[14].dy2 = 20;
+    boardObjectsArr[14].dy1 = 20;
+    boardObjectsArr[15].dy2 = 21;
+    boardObjectsArr[15].dy1 = 21;
+    boardObjectsArr[16].dy2 = 21;
+    boardObjectsArr[16].dy1 = 21;
+    boardObjectsArr[16].dx2 = 4;
+    boardObjectsArr[17].dy2 = 21;
+    boardObjectsArr[17].dy1 = 21;
+    boardObjectsArr[17].dx1 = -4;
+    boardObjectsArr[17].dx2 = -4;
+    boardObjectsArr[18].dx2 = 10;
+    boardObjectsArr[19].dx1 = -4;
+    boardObjectsArr[19].dx2 = -4;
+    boardObjectsArr[19].dy1 = 42;
+    boardObjectsArr[19].dy2 = 44;
+    boardObjectsArr[18].dy1 = 30;
+    boardObjectsArr[18].dy2 = 30;
+  }
   function structureHitTop1(){
     boardObjectsArr[18].dx2 = -3;
     boardObjectsArr[19].dx1 = -3;
@@ -393,6 +467,25 @@ var startGame = function(){
       structure.hit = 2.2;
     }
   }
+  function princessFalling(){
+    
+    for(var i=0;i<hostageLineObjects.length;i++){
+      hostageLineObjects[i].dy1 = 5;
+      hostageLineObjects[i].dy2 = 5;
+    }
+    for(var i=0;i<hostageRoundObjects.length;i++){
+      hostageRoundObjects[i].dy = 5;
+    }
+    
+    if(hostageLineObjects[0].y1 > 315){
+      createBlood();
+      hostageBlood();
+      explodeHostage();
+      
+      
+      structure.hit = 'done';
+    }
+  }
   
   function boardReset(){
     for(var i=0;i<boardObjectsArr.length;i++){
@@ -414,7 +507,7 @@ var startGame = function(){
   }
   // Begin of Weapon Weapon Weapon ///////////
   
-
+  
  
   function fireBall(){
     ballObjects[weapon.whichBall].dx = 10;
@@ -460,17 +553,27 @@ var startGame = function(){
       smallBallArr[i].remove();
     }
   }
-  var fireCount = 0;
+  
+  var pipe = createRectElement(150,35,100,441.5,1,'#92BCC8',14);
+  var pipe2 = createRectElement(35,85,100,441.5,1,'#92BCC8',5);
+  var capOfGun = createElipseElement(238,460,12,18,'white',0.25,'black');
+  
   function trigger(){
-    var trigger  = createElipseElement(55,500,20,15,'red');
-    trigger.onclick = function(){
+    var clearTrigger  = createRectElement(150,55,45,496,0,'#284F23',10);
+    clearTrigger.onclick = function(){
       fireBall();
     }
   }
+  
+  var triggerColor  = createRectElement(150,55,45,496,1,'#284F23',10);
+  var fire = createTextElement(100,530,25,'center',1,'white','FIRE!');
   trigger();
-  var ball1 = createBallElement(200,500,12.5,'white');
-  var ball2 = createBallElement(175,500,12.5,'white');
-  var ball3 = createBallElement(150,500,12.5,'white');
+  var heroStep = createRectElement(55,67.5,45.5,461.5,1,'#284F23',0);
+  // function createText(x,y,fontSize,textAnchor,opacity,color,text)
+  // createRectElement(width,height,x,y,opacity,fill,rx)
+  var ball1 = createBallElement(240,460,12.5,'white');
+  var ball2 = createBallElement(212.5,460,12.5,'white');
+  var ball3 = createBallElement(185.5,460,12.5,'white');
   weapon.whichBall = 0;
   var ball1Obj = createBallObj(ball1);
   var ball2Obj = createBallObj(ball2);
@@ -478,12 +581,31 @@ var startGame = function(){
   var ballObjects = [ball1Obj,ball2Obj,ball3Obj];
   var ballEleArr = [ball1,ball2,ball3];
   // End of Weapon Weapon Weapon ///////////////
+  // HERO ;alksdfj;alksdfja;dslkfjadfs;lkjasdf
+  var hero = {};
+  hero.torso1Ele = createLineElement(47,101,427.5,427.5,18,'#BD2C06');
+  hero.torso2Ele = createLineElement(56,92,447.5,447.5,30,'#BD2C06');
+  // hostage.torso2Ele = createLineElement(880,917,130,130,30,'#FFB1E5');
+  hero.headEle = createBallElement(75,410,25,'#FFE1CE');
+  // createLineElement(x1,x2,y1,y2,strWdth,color)
+  hero.leftEyeEle = createElipseElement(68,407,8,10,'white');
+  hero.rightEyeEle = createElipseElement(82,407,8,10,'white');
+  
+  hero.leftEyeColorEle = createElipseElement(70,407,1.5,1.5,'#1E181A');
+  hero.rightEyeColorEle = createElipseElement(85,407,1.5,1.5,'#1E181A');
+  // hostage.rightEyeColorEle = createElipseElement(907,95,1.5,1.5,'#1E181A');
+  hero.hair1Ele = createLineElement(55,100,387,385,12,'#5A3F2A');
+  // hostage.hair2Ele = createLineElement(900,944,69,110,15,'#FFFF01');
+  hero.mouthEle = createElipseElement(75,422,4,4,'#1E181A');
+
+
+
+  // End HERO a;ldfja;ldkfja;lkdfja;dlfkja;ldfjdfjfjf
   structure.hit = 0;
 
   var viewWidth = view.width;
   var viewHeight = view.height;
-  // explodeHostage();
-  // hostageBlood();
+  
   var animate = function(){
     for(var i=0;i<hostageRoundObjects.length;i++){
       hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
@@ -496,10 +618,12 @@ var startGame = function(){
       hostageLineObjects[i].y1 += hostageLineObjects[i].dy1;
       hostageLineObjects[i].y2 += hostageLineObjects[i].dy2;
     }
-    for(var i=0;i<bloodObjArr.length;i++){
-      bloodObjArr[i].cx += bloodObjArr[i].dx;
-      bloodObjArr[i].cy += bloodObjArr[i].dy;
-    }
+   
+      for(var i=0;i<bloodObjArr.length;i++){
+        bloodObjArr[i].cx += bloodObjArr[i].dx;
+        bloodObjArr[i].cy += bloodObjArr[i].dy;
+      }
+    
     for(var i=0;i<ballObjArr.length;i++){
       ballObjArr[i].cx += ballObjArr[i].dx;
       ballObjArr[i].cy += ballObjArr[i].dy;
@@ -539,7 +663,7 @@ var startGame = function(){
     }
     
     if(structure.hit === 2.1){
-      if(boardObjectsArr[weapon.whichBall -1].x1 < 940){
+      if(boardObjectsArr[0].x1 < 940){
         structureHit2();
       }
       else{
@@ -550,8 +674,17 @@ var startGame = function(){
     if(structure.hit === 'top2'){
       structureHitTop2();
     }
-    if(structure.hit === 2.2){
-      console.log('hi');
+    if(structure.hit === 3.2){
+      if(boardObjectsArr[2].y1 < 520){
+        structureHit3();
+      }
+      else{
+        boardReset();
+        structure.hit = 'pricessFalling';
+      }
+    }
+    if(structure.hit === 'pricessFalling'){
+      princessFalling();
     }
     
     
