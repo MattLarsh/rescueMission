@@ -580,8 +580,8 @@ var startGame = function(){
   var ball3Obj = createBallObj(ball3);
   var ballObjects = [ball1Obj,ball2Obj,ball3Obj];
   var ballEleArr = [ball1,ball2,ball3];
-  // End of Weapon Weapon Weapon ///////////////
-  // HERO ;alksdfj;alksdfja;dslkfjadfs;lkjasdf
+  // End of Weapon Weapon Weapon 
+  // HERO 
   var hero = {};
   hero.torso1Ele = createLineElement(47,101,427.5,427.5,18,'#BD2C06');
   hero.torso2Ele = createLineElement(56,92,447.5,447.5,30,'#BD2C06');
@@ -594,13 +594,36 @@ var startGame = function(){
   hero.leftEyeColorEle = createElipseElement(70,407,1.5,1.5,'#1E181A');
   hero.rightEyeColorEle = createElipseElement(85,407,1.5,1.5,'#1E181A');
   // hostage.rightEyeColorEle = createElipseElement(907,95,1.5,1.5,'#1E181A');
-  hero.hair1Ele = createLineElement(55,100,387,385,12,'#5A3F2A');
+  // hero.hair1Ele = createLineElement(55,100,387,385,7,'#5A3F2A');
   // hostage.hair2Ele = createLineElement(900,944,69,110,15,'#FFFF01');
   hero.mouthEle = createElipseElement(75,422,4,4,'#1E181A');
+  hero.hair1Ele = createLineElement(55,50,388,418,7,'#D1A967');
+  hero.hair2Ele = createLineElement(55,100,388,384,12,'#D1A967');
+  // hero.hair3Ele = createLineElement(750,755,62,92,7,'#D1A967');
+  // // End HERO 
+  // Begin BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkj
+  var badGuy1 = {};
+  badGuy1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
+  // createLineElement(x1,x2,y1,y2,strWdth,color)
+  badGuy1.torso2Ele = createLineElement(710,744,120,120.5,30,'#DE5D25');
+  // // hostage.torso2Ele = createLineElement(880,917,130,130,30,'#FFB1E5');
+  badGuy1.headEle = createBallElement(727.5,80,26,'#FFE1CE');
+  
+  badGuy1.leftEyeEle = createElipseElement(721,78,8,10,'white');
+  badGuy1.rightEyeEle = createElipseElement(734,78,8,10,'white');
+  badGuy1.leftEyeColorEle = createElipseElement(717,78,1.5,1.5,'red');
+  badGuy1.rightEyeColorEle = createElipseElement(731,78,1.5,1.5,'red');
+  
+  badGuy1.hair1Ele = createLineElement(705,700,65,95,7,'#F1EFBE');
+  badGuy1.hair2Ele = createLineElement(705,745,60,56,12,'#F1EFBE');
+  badGuy1.hair3Ele = createLineElement(750,755,62,92,7,'#F1EFBE');
+  // // hostage.hair2Ele = createLineElement(900,944,69,110,15,'#FFFF01');
+  badGuy1.mouthEle = createElipseElement(728,96,4,4,'#1E181A');
 
+  badGuy1.eyeBrow1Ele = createLineElement(714,725,61,68,1.5,'black');
+  badGuy1.eyeBrow2Ele = createLineElement(727,738,68,57,1.5,'black');
 
-
-  // End HERO a;ldfja;ldkfja;lkdfja;dlfkja;ldfjdfjfjf
+  // BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkj
   structure.hit = 0;
 
   var viewWidth = view.width;
