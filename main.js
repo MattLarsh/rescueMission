@@ -601,28 +601,75 @@ var startGame = function(){
   hero.hair2Ele = createLineElement(55,100,388,384,12,'#D1A967');
   // hero.hair3Ele = createLineElement(750,755,62,92,7,'#D1A967');
   // // End HERO 
-  // Begin BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkj
+  // Begin BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkjasdfasdfadfffdfdfdfdfddffd
+  var badGuys = {};
   var badGuy1 = {};
-  badGuy1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
-  // createLineElement(x1,x2,y1,y2,strWdth,color)
-  badGuy1.torso2Ele = createLineElement(710,744,120,120.5,30,'#DE5D25');
-  // // hostage.torso2Ele = createLineElement(880,917,130,130,30,'#FFB1E5');
-  badGuy1.headEle = createBallElement(727.5,80,26,'#FFE1CE');
-  
-  badGuy1.leftEyeEle = createElipseElement(721,78,8,10,'white');
-  badGuy1.rightEyeEle = createElipseElement(734,78,8,10,'white');
-  badGuy1.leftEyeColorEle = createElipseElement(717,78,1.5,1.5,'red');
-  badGuy1.rightEyeColorEle = createElipseElement(731,78,1.5,1.5,'red');
-  
-  badGuy1.hair1Ele = createLineElement(705,700,65,95,7,'#F1EFBE');
-  badGuy1.hair2Ele = createLineElement(705,745,60,56,12,'#F1EFBE');
-  badGuy1.hair3Ele = createLineElement(750,755,62,92,7,'#F1EFBE');
-  // // hostage.hair2Ele = createLineElement(900,944,69,110,15,'#FFFF01');
-  badGuy1.mouthEle = createElipseElement(728,96,4,4,'#1E181A');
+  var badGuy1Objects = {};
+  function createBadGuy1(){
+    badGuy1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
+    badGuy1.torso2Ele = createLineElement(710,744,120,120.5,30,'#DE5D25');
+    badGuy1.headEle = createBallElement(727.5,80,26,'#FFE1CE');
+    badGuy1.leftEyeEle = createElipseElement(721,78,8,10,'white');
+    badGuy1.rightEyeEle = createElipseElement(734,78,8,10,'white');
+    badGuy1.leftEyeColorEle = createElipseElement(717,78,1.5,1.5,'red');
+    badGuy1.rightEyeColorEle = createElipseElement(731,78,1.5,1.5,'red');
+    badGuy1.hair1Ele = createLineElement(705,700,65,95,7,'#F1EFBE');
+    badGuy1.hair2Ele = createLineElement(705,745,60,56,12,'#F1EFBE');
+    badGuy1.hair3Ele = createLineElement(750,755,62,92,7,'#F1EFBE');
+    badGuy1.mouthEle = createElipseElement(728,96,4,4,'#1E181A');
+    badGuy1.rightEyeBrowEle = createLineElement(714,725,61,68,1.5,'black');
+    badGuy1.leftEyeBrowEle = createLineElement(727,738,68,57,1.5,'black');
+    badGuy1Objects.badGuy1HeadObj = createBallObj(badGuy1.headEle);
+    badGuy1Objects.badGuy1LeftEyeObj = createElipseObj(badGuy1.leftEyeEle);
+    badGuy1Objects.badGuy1RightEyeObj = createElipseObj(badGuy1.rightEyeEle);
+    badGuy1Objects.badGuy1LeftEyeColorObj = createElipseObj(badGuy1.leftEyeColorEle);
+    badGuy1Objects.badGuy1RightEyeColorObj = createElipseObj(badGuy1.rightEyeColorEle);
+    badGuy1Objects.badGuy1MouthObj = createElipseObj(badGuy1.mouthEle);
+    badGuy1Objects.badGuy1Torso1Obj = createLineObject(badGuy1.torso1Ele);
+    badGuy1Objects.badGuy1Torso2Obj = createLineObject(badGuy1.torso2Ele);
+    badGuy1Objects.badGuy1Hair1Obj = createLineObject(badGuy1.hair1Ele);
+    badGuy1Objects.badGuy1Hair2Obj = createLineObject(badGuy1.hair2Ele);
+    badGuy1Objects.badGuy1Hair1Obj = createLineObject(badGuy1.hair1Ele);
+    badGuy1Objects.badGuy1Hair2Obj = createLineObject(badGuy1.hair2Ele);
+    badGuy1Objects.badGuy1Hair3Obj = createLineObject(badGuy1.hair3Ele);
+    badGuy1Objects.badGuy1RightEyeBrowObj = createLineObject(badGuy1.leftEyeBrowEle);
+    badGuy1Objects.badGuy1LeftEyeBrowObj = createLineObject(badGuy1.rightEyeBrowEle);
+    badGuys.create = 'one';
+  }
+  createBadGuy1()
+  badGuy1.badDir = 'down';
+  badGuy1.speed = 4;
+  function badGuy1Movement(){
+    if(badGuy1RoundObjects[0].cy > 450 && badGuy1.badDir === 'down'){
+      badGuy1.speed *= -1
+      badGuy1.badDir = 'up'
+    }
+    if(badGuy1RoundObjects[0].cy > 300 ){
+      badGuy1.speed += 1
+    }
+    if(badGuy1RoundObjects[0].cy < 100 ){
+      badGuy1.speed -= 0.001
+    }
+    if(badGuy1RoundObjects[0].cy < 20 && badGuy1.badDir === 'up'){
+      badGuy1.speed *= -1
+      badGuy1.badDir = 'down'
+    }
+    for(var i=0;i<badGuy1RoundObjects.length;i++){
+      badGuy1RoundObjects[i].dy = badGuy1.speed;
+    }
+    for(var i=0;i<badGuy1LineObjects.length;i++){
+      badGuy1LineObjects[i].dy1 = badGuy1.speed;
+      badGuy1LineObjects[i].dy2 = badGuy1.speed;
+    }
+  }
 
-  badGuy1.eyeBrow1Ele = createLineElement(714,725,61,68,1.5,'black');
-  badGuy1.eyeBrow2Ele = createLineElement(727,738,68,57,1.5,'black');
 
+
+  
+
+  var badGuy1LineObjects = [badGuy1Objects.badGuy1LeftEyeBrowObj,badGuy1Objects.badGuy1RightEyeBrowObj,badGuy1Objects.badGuy1Hair3Obj,badGuy1Objects.badGuy1Torso1Obj,badGuy1Objects.badGuy1Torso2Obj,badGuy1Objects.badGuy1Hair1Obj,badGuy1Objects.badGuy1Hair2Obj];
+  var badGuy1RoundObjects = [badGuy1Objects.badGuy1HeadObj,badGuy1Objects.badGuy1LeftEyeObj,badGuy1Objects.badGuy1RightEyeObj,badGuy1Objects.badGuy1LeftEyeColorObj,badGuy1Objects.badGuy1RightEyeColorObj,badGuy1Objects.badGuy1MouthObj];
+  
   // BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkj
   structure.hit = 0;
 
@@ -630,6 +677,22 @@ var startGame = function(){
   var viewHeight = view.height;
   
   var animate = function(){
+    // badGuy1RoundObjects[0].dy = 1;
+    // badGuy1RoundObjects[1].dy = 1;
+    // badGuy1RoundObjects[2].dy = 1;
+    if(badGuy1.torso1Ele != null){
+      for(var i=0;i<badGuy1RoundObjects.length;i++){
+        badGuy1RoundObjects[i].cx += badGuy1RoundObjects[i].dx;
+        badGuy1RoundObjects[i].cy += badGuy1RoundObjects[i].dy;
+      }
+      for(var i=0;i<badGuy1LineObjects.length;i++){
+        badGuy1LineObjects[i].x1 += badGuy1LineObjects[i].dx1;
+        badGuy1LineObjects[i].x2 += badGuy1LineObjects[i].dx2;
+        badGuy1LineObjects[i].y1 += badGuy1LineObjects[i].dy1;
+        badGuy1LineObjects[i].y2 += badGuy1LineObjects[i].dy2;
+      }
+
+    }
     for(var i=0;i<hostageRoundObjects.length;i++){
       hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
       hostageRoundObjects[i].cy += hostageRoundObjects[i].dy;
@@ -709,7 +772,9 @@ var startGame = function(){
     if(structure.hit === 'pricessFalling'){
       princessFalling();
     }
-    
+    if(badGuys.create = 'one'){
+      badGuy1Movement()
+    }
     
    
     
