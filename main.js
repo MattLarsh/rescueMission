@@ -505,6 +505,18 @@ var startGame = function(){
       hostageRoundObjects[i].dy = 0;
     }
   }
+
+  // createElipseElement(cx,cy,rx,ry,color,opacity,stroke)
+  // createLineElement(x1,x2,y1,y2,strWdth,color)
+  var trampoline1Leg1Ele = createLineElement(690,690,525,545,2,'black');
+  var trampoline1Leg2Ele = createLineElement(725,725,535,555,2,'black');
+  var trampoline1Leg3Ele = createLineElement(760,760,525,545,2,'black');
+  var trampoline1Ele = createElipseElement(725,525,40,10,'#4C4E4B',1,'blue');
+  var trampoline1Leg1Ele = createLineElement(520,520,525,545,2,'black');
+  var trampoline1Leg2Ele = createLineElement(555,555,535,555,2,'black');
+  var trampoline1Leg3Ele = createLineElement(590,590,525,545,2,'black');
+  var trampoline2Ele = createElipseElement(555,525,40,10,'#4C4E4B',1,'blue');
+
   // Begin of Weapon Weapon Weapon ///////////
   
   
@@ -585,9 +597,7 @@ var startGame = function(){
   var hero = {};
   hero.torso1Ele = createLineElement(47,101,427.5,427.5,18,'#BD2C06');
   hero.torso2Ele = createLineElement(56,92,447.5,447.5,30,'#BD2C06');
-  // hostage.torso2Ele = createLineElement(880,917,130,130,30,'#FFB1E5');
   hero.headEle = createBallElement(75,410,25,'#FFE1CE');
-  // createLineElement(x1,x2,y1,y2,strWdth,color)
   hero.leftEyeEle = createElipseElement(68,407,8,10,'white');
   hero.rightEyeEle = createElipseElement(82,407,8,10,'white');
   
@@ -608,7 +618,7 @@ var startGame = function(){
   function createBadGuy1(){
     badGuy1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
     badGuy1.torso2Ele = createLineElement(710,744,120,120.5,30,'#DE5D25');
-    badGuy1.headEle = createBallElement(727.5,80,26,'#FFE1CE');
+    badGuy1.headEle = createBallElement(727.5,80,27,'#FFE1CE');
     badGuy1.leftEyeEle = createElipseElement(721,78,8,10,'white');
     badGuy1.rightEyeEle = createElipseElement(734,78,8,10,'white');
     badGuy1.leftEyeColorEle = createElipseElement(717,78,1.5,1.5,'red');
@@ -640,18 +650,20 @@ var startGame = function(){
   badGuy1.badDir = 'down';
   badGuy1.speed = 4;
   function badGuy1Movement(){
-    if(badGuy1RoundObjects[0].cy > 450 && badGuy1.badDir === 'down'){
-      badGuy1.speed *= -1
+    if(badGuy1RoundObjects[0].cy > 470 && badGuy1.badDir === 'down'){
+      badGuy1.speed *= -1;
       badGuy1.badDir = 'up'
     }
-    if(badGuy1RoundObjects[0].cy > 300 ){
-      badGuy1.speed += 1
+    console.log(badGuy1RoundObjects[0].cy && badGuy1.badDir === 'down');
+    if(badGuy1RoundObjects[0].cy > 120 ){
+      badGuy1.speed += 0.25;
     }
-    if(badGuy1RoundObjects[0].cy < 100 ){
-      badGuy1.speed -= 0.001
+    if(badGuy1RoundObjects[0].cy > 400 ){
+      badGuy1.speed -= 0.25;
     }
-    if(badGuy1RoundObjects[0].cy < 20 && badGuy1.badDir === 'up'){
-      badGuy1.speed *= -1
+    if(badGuy1RoundObjects[0].cy < 170 && badGuy1.badDir === 'up'){
+      badGuy1.speed *= -1;
+      badGuy1.speed += 0.25;
       badGuy1.badDir = 'down'
     }
     for(var i=0;i<badGuy1RoundObjects.length;i++){
