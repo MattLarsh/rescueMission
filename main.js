@@ -291,11 +291,8 @@ var startGame = function(){
     }
     
   }
-  // setTimeout(explodeHostage,2000);
-  // setTimeout(hostageBlood,2000);
   
-  var d = 5;
-  var e = 10;
+  
   var view = field.viewBox.baseVal;
   function structureHit1(){
     boardObjectsArr[0].dx1 = 2;
@@ -505,7 +502,18 @@ var startGame = function(){
       hostageRoundObjects[i].dy = 0;
     }
   }
-
+  function resetBadGuy(badGuyLineObjects,badGuyRoundObjects){
+    for(var i=0;i<badGuyLineObjects.length;i++){
+      badGuyLineObjects[i].dx1 = 0;
+      badGuyLineObjects[i].dx2 = 0;
+      badGuyLineObjects[i].dy1 = 0;
+      badGuyLineObjects[i].dy2 = 0;
+    }
+    for(var i=0;i<badGuyRoundObjects.length;i++){
+      badGuyRoundObjects[i].dx = 0;
+      badGuyRoundObjects[i].dy = 0;
+    }
+  }
   // createElipseElement(cx,cy,rx,ry,color,opacity,stroke)
   // createLineElement(x1,x2,y1,y2,strWdth,color)
   var trampoline1Leg1Ele = createLineElement(690,690,525,545,2,'black');
@@ -650,48 +658,92 @@ var startGame = function(){
     badGuys.create = 'one';
   }
   createBadGuy1()
-  badGuy1.badDir = 'down';
-  badGuy1.ySpeed = 4;
-  badGuy1.xSpeed = 0;
-  badGuy1.jump = 0;
-  function badGuy1Movement(){
-    if(badGuy1RoundObjects[0].cy > 470 && badGuy1.badDir === 'down'){
-      badGuy1.ySpeed *= -1;
-      badGuy1.badDir = 'up'
-      badGuy1.jump++;
+  function explode(roundObjects,lineObjects,person){
+    var x;
+    for(var i=0;i<roundObjects.length;i++){
+      if(Math.random() > 0.5){
+        x = 14;
+      }
+      else{
+        x = -14;
+      }
+      roundObjects[i].dx = x * Math.random();
+      roundObjects[i].dy = x * Math.random();
     }
-    if(badGuy1.jump === 2){
-      badGuy1.xSpeed = -6;
+    for(var i=0;i<lineObjects.length;i++){
+      if(Math.random() > 0.5){
+        x = 100 * Math.random();
+      }
+      else{
+        x = -100 * Math.random();
+      }
+      lineObjects[i].dx1 = x;
+      lineObjects[i].dx2 = x;
+    }
+    setTimeout(remove,2500,person);
+  }
+  
+
+  function remove(person){
+    for(var key in person){
+      person[key].remove();
+    }
+    
+    // for(var i=0;i<bloodEleArr.length;i++){
+
+    //   bloodEleArr[i].remove();
+    // }
+    
+  }
+
+  var move1 = {};
+  move1.badDir = 'down';
+  move1.ySpeed = 4;
+  move1.xSpeed = 0;
+  move1.jump = 0;
+  function badGuy1Movement(){
+    if(badGuy1RoundObjects[0].cy > 470 && move1.badDir === 'down'){
+      move1.ySpeed *= -1;
+      move1.badDir = 'up'
+      move1.jump++;
+    }
+    if(move1.jump === 2){
+      move1.xSpeed = -6;
     }
     if(badGuy1RoundObjects[0].cx < 560){
-      badGuy1.xSpeed = 0;
+      move1.xSpeed = 0;
     }
-    if(badGuy1.jump === 4){
-      badGuy1.xSpeed = -6;
+    if(move1.jump === 4){
+      move1.xSpeed = -6;
+    }
+    if(move1.jump === 6){
+      badGuys.create = 'none';
+      resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects)
+      return;
     }
     if(badGuy1RoundObjects[0].cx < 390){
-      badGuy1.xSpeed = 0;
+      move1.xSpeed = 0;
     }
     if(badGuy1RoundObjects[0].cy > 120 ){
-      badGuy1.ySpeed += 0.25;
+      move1.ySpeed += 0.25;
     }
     if(badGuy1RoundObjects[0].cy > 400 ){
-      badGuy1.ySpeed -= 0.25;
+      move1.ySpeed -= 0.25;
     }
-    if(badGuy1RoundObjects[0].cy < 170 && badGuy1.badDir === 'up'){
-      badGuy1.ySpeed *= -1;
-      badGuy1.ySpeed += 0.25;
-      badGuy1.badDir = 'down'
+    if(badGuy1RoundObjects[0].cy < 170 && move1.badDir === 'up'){
+      move1.ySpeed *= -1;
+      move1.ySpeed += 0.25;
+      move1.badDir = 'down'
     }
     for(var i=0;i<badGuy1RoundObjects.length;i++){
-      badGuy1RoundObjects[i].dy = badGuy1.ySpeed;
-      badGuy1RoundObjects[i].dx = badGuy1.xSpeed;
+      badGuy1RoundObjects[i].dy = move1.ySpeed;
+      badGuy1RoundObjects[i].dx = move1.xSpeed;
     }
     for(var i=0;i<badGuy1LineObjects.length;i++){
-      badGuy1LineObjects[i].dy1 = badGuy1.ySpeed;
-      badGuy1LineObjects[i].dy2 = badGuy1.ySpeed;
-      badGuy1LineObjects[i].dx1 = badGuy1.xSpeed;
-      badGuy1LineObjects[i].dx2 = badGuy1.xSpeed;
+      badGuy1LineObjects[i].dy1 = move1.ySpeed;
+      badGuy1LineObjects[i].dy2 = move1.ySpeed;
+      badGuy1LineObjects[i].dx1 = move1.xSpeed;
+      badGuy1LineObjects[i].dx2 = move1.xSpeed;
     }
   }
 
@@ -701,7 +753,6 @@ var startGame = function(){
 
   var badGuy1LineObjects = [badGuy1Objects.badGuy1LeftEyeBrowObj,badGuy1Objects.badGuy1RightEyeBrowObj,badGuy1Objects.badGuy1Hair3Obj,badGuy1Objects.badGuy1Torso1Obj,badGuy1Objects.badGuy1Torso2Obj,badGuy1Objects.badGuy1Hair1Obj,badGuy1Objects.badGuy1Hair2Obj];
   var badGuy1RoundObjects = [badGuy1Objects.badGuy1HeadObj,badGuy1Objects.badGuy1LeftEyeObj,badGuy1Objects.badGuy1RightEyeObj,badGuy1Objects.badGuy1LeftEyeColorObj,badGuy1Objects.badGuy1RightEyeColorObj,badGuy1Objects.badGuy1MouthObj];
-  
   // BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkj
   structure.hit = 0;
 
@@ -804,9 +855,14 @@ var startGame = function(){
     if(structure.hit === 'pricessFalling'){
       princessFalling();
     }
-    if(badGuys.create = 'one'){
+    if(badGuys.create === 'none'){
+      explode(badGuy1RoundObjects,badGuy1LineObjects,badGuy1);
+      badGuys.create = 'hi';
+    }
+    if(badGuys.create === 'one'){
       badGuy1Movement()
     }
+
     
    
     
