@@ -512,11 +512,14 @@ var startGame = function(){
   var trampoline1Leg2Ele = createLineElement(725,725,535,555,2,'black');
   var trampoline1Leg3Ele = createLineElement(760,760,525,545,2,'black');
   var trampoline1Ele = createElipseElement(725,525,40,10,'#4C4E4B',1,'blue');
-  var trampoline1Leg1Ele = createLineElement(520,520,525,545,2,'black');
-  var trampoline1Leg2Ele = createLineElement(555,555,535,555,2,'black');
-  var trampoline1Leg3Ele = createLineElement(590,590,525,545,2,'black');
+  var trampoline2Leg1Ele = createLineElement(520,520,525,545,2,'black');
+  var trampoline2Leg2Ele = createLineElement(555,555,535,555,2,'black');
+  var trampoline2Leg3Ele = createLineElement(590,590,525,545,2,'black');
   var trampoline2Ele = createElipseElement(555,525,40,10,'#4C4E4B',1,'blue');
-
+  var trampoline3Leg1Ele = createLineElement(350,350,525,545,2,'black');
+  var trampoline3Leg2Ele = createLineElement(385,385,535,555,2,'black');
+  var trampoline3Leg3Ele = createLineElement(420,420,525,545,2,'black');
+  var trampoline3Ele = createElipseElement(385,525,40,10,'#4C4E4B',1,'blue');
   // Begin of Weapon Weapon Weapon ///////////
   
   
@@ -648,30 +651,47 @@ var startGame = function(){
   }
   createBadGuy1()
   badGuy1.badDir = 'down';
-  badGuy1.speed = 4;
+  badGuy1.ySpeed = 4;
+  badGuy1.xSpeed = 0;
+  badGuy1.jump = 0;
   function badGuy1Movement(){
     if(badGuy1RoundObjects[0].cy > 470 && badGuy1.badDir === 'down'){
-      badGuy1.speed *= -1;
+      badGuy1.ySpeed *= -1;
       badGuy1.badDir = 'up'
+      badGuy1.jump++;
     }
-    console.log(badGuy1RoundObjects[0].cy && badGuy1.badDir === 'down');
+    if(badGuy1.jump === 2){
+      badGuy1.xSpeed = -6;
+    }
+    if(badGuy1RoundObjects[0].cx < 560){
+      badGuy1.xSpeed = 0;
+    }
+    if(badGuy1.jump === 4){
+      badGuy1.xSpeed = -6;
+    }
+    if(badGuy1RoundObjects[0].cx < 390){
+      badGuy1.xSpeed = 0;
+    }
     if(badGuy1RoundObjects[0].cy > 120 ){
-      badGuy1.speed += 0.25;
+      badGuy1.ySpeed += 0.25;
     }
     if(badGuy1RoundObjects[0].cy > 400 ){
-      badGuy1.speed -= 0.25;
+      badGuy1.ySpeed -= 0.25;
     }
     if(badGuy1RoundObjects[0].cy < 170 && badGuy1.badDir === 'up'){
-      badGuy1.speed *= -1;
-      badGuy1.speed += 0.25;
+      badGuy1.ySpeed *= -1;
+      badGuy1.ySpeed += 0.25;
       badGuy1.badDir = 'down'
     }
     for(var i=0;i<badGuy1RoundObjects.length;i++){
-      badGuy1RoundObjects[i].dy = badGuy1.speed;
+      badGuy1RoundObjects[i].dy = badGuy1.ySpeed;
+      badGuy1RoundObjects[i].dx = badGuy1.xSpeed;
     }
     for(var i=0;i<badGuy1LineObjects.length;i++){
-      badGuy1LineObjects[i].dy1 = badGuy1.speed;
-      badGuy1LineObjects[i].dy2 = badGuy1.speed;
+      badGuy1LineObjects[i].dy1 = badGuy1.ySpeed;
+      badGuy1LineObjects[i].dy2 = badGuy1.ySpeed;
+      badGuy1LineObjects[i].dx1 = badGuy1.xSpeed;
+      badGuy1LineObjects[i].dx2 = badGuy1.xSpeed;
     }
   }
 
