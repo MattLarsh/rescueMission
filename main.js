@@ -205,7 +205,7 @@ var startGame = function(){
   function hostageBlood(){
     var x;
     var y;
-    for(var i=0;i<bloodObjArr.length;i++){
+    for(var i=0,len=bloodObjArr.length;i<len;i++){
       if(Math.random() > 0.5){
         x = 100;
       }
@@ -257,7 +257,7 @@ var startGame = function(){
 
   function explodeHostage(){
     var x;
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       if(Math.random() > 0.5){
         x = 14;
       }
@@ -267,7 +267,7 @@ var startGame = function(){
       hostageRoundObjects[i].dx = x * Math.random();
       hostageRoundObjects[i].dy = x * Math.random();
     }
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       if(Math.random() > 0.5){
         x = 100 * Math.random();
       }
@@ -285,7 +285,7 @@ var startGame = function(){
       hostage[key].remove();
     }
     
-    for(var i=0;i<bloodEleArr.length;i++){
+    for(var i=0,len=bloodEleArr.length;i<len;i++){
 
       bloodEleArr[i].remove();
     }
@@ -320,11 +320,11 @@ var startGame = function(){
     boardObjectsArr[18].dx2 = 2;
     boardObjectsArr[19].dx1 = 2;
     boardObjectsArr[19].dx2 = 2;
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].dx1 = 2;
       hostageLineObjects[i].dx2 = 2;
     }
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].dx = 2;
     }
     
@@ -379,13 +379,13 @@ var startGame = function(){
     boardObjectsArr[19].dy2 = 1.25;
     boardObjectsArr[19].dx1 = -3;
     boardObjectsArr[19].dx2 = -3;
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].dx1 = -3;
       hostageLineObjects[i].dx2 = -3;
       hostageLineObjects[i].dy1 = 1.25;
       hostageLineObjects[i].dy2 = 1.25;
     }
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].dx = -3;
       hostageRoundObjects[i].dy = 1.25;
     }
@@ -436,11 +436,11 @@ var startGame = function(){
     boardObjectsArr[18].dx2 = -3;
     boardObjectsArr[19].dx1 = -3;
     boardObjectsArr[19].dx2 = -3;
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].dx1 = -3;
       hostageLineObjects[i].dx2 = -3;
     }
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].dx = -3;
     }
     if(boardObjectsArr[18].x2 < 892){
@@ -452,11 +452,11 @@ var startGame = function(){
     boardObjectsArr[18].dx2 = 10;
     boardObjectsArr[19].dx1 = 10;
     boardObjectsArr[19].dx2 = 10;
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].dx1 = 10;
       hostageLineObjects[i].dx2 = 10;
     }
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].dx = 10;
     }
     if(boardObjectsArr[19].x1 > 890){
@@ -466,11 +466,11 @@ var startGame = function(){
   }
   function princessFalling(){
     
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].dy1 = 5;
       hostageLineObjects[i].dy2 = 5;
     }
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].dy = 5;
     }
     
@@ -485,31 +485,31 @@ var startGame = function(){
   }
   
   function boardReset(){
-    for(var i=0;i<boardObjectsArr.length;i++){
+    for(var i=0,len=boardObjectsArr.length;i<len;i++){
         boardObjectsArr[i].dx1 = 0;
         boardObjectsArr[i].dx2 = 0;
         boardObjectsArr[i].dy1 = 0;
         boardObjectsArr[i].dy2 = 0;
       }
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].dx1 = 0;
       hostageLineObjects[i].dx2 = 0;
       hostageLineObjects[i].dy1 = 0;
       hostageLineObjects[i].dy2 = 0;
     }
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].dx = 0;
       hostageRoundObjects[i].dy = 0;
     }
   }
   function resetBadGuy(badGuyLineObjects,badGuyRoundObjects){
-    for(var i=0;i<badGuyLineObjects.length;i++){
+    for(var i=0,len=badGuyLineObjects.length;i<len;i++){
       badGuyLineObjects[i].dx1 = 0;
       badGuyLineObjects[i].dx2 = 0;
       badGuyLineObjects[i].dy1 = 0;
       badGuyLineObjects[i].dy2 = 0;
     }
-    for(var i=0;i<badGuyRoundObjects.length;i++){
+    for(var i=0,len=badGuyRoundObjects.length;i<len;i++){
       badGuyRoundObjects[i].dx = 0;
       badGuyRoundObjects[i].dy = 0;
     }
@@ -551,7 +551,7 @@ var startGame = function(){
   function ballExplode(){
     var x;
     var y;
-    for(var i=0;i<ballObjArr.length;i++){
+    for(var i=0,len=ballObjArr.length;i<len;i++){
       if(Math.random() > 0.5){
         x = 20;
       }
@@ -660,7 +660,7 @@ var startGame = function(){
   createBadGuy1()
   function explode(roundObjects,lineObjects,person){
     var x;
-    for(var i=0;i<roundObjects.length;i++){
+    for(var i=0,len=roundObjects.length;i<len;i++){
       if(Math.random() > 0.5){
         x = 14;
       }
@@ -670,7 +670,7 @@ var startGame = function(){
       roundObjects[i].dx = x * Math.random();
       roundObjects[i].dy = x * Math.random();
     }
-    for(var i=0;i<lineObjects.length;i++){
+    for(var i=0,len=lineObjects.length;i<len;i++){
       if(Math.random() > 0.5){
         x = 100 * Math.random();
       }
@@ -735,11 +735,11 @@ var startGame = function(){
       move1.ySpeed += 0.25;
       move1.badDir = 'down'
     }
-    for(var i=0;i<badGuy1RoundObjects.length;i++){
+    for(var i=0,len=badGuy1RoundObjects.length;i<len;i++){
       badGuy1RoundObjects[i].dy = move1.ySpeed;
       badGuy1RoundObjects[i].dx = move1.xSpeed;
     }
-    for(var i=0;i<badGuy1LineObjects.length;i++){
+    for(var i=0,len=badGuy1LineObjects.length;i<len;i++){
       badGuy1LineObjects[i].dy1 = move1.ySpeed;
       badGuy1LineObjects[i].dy2 = move1.ySpeed;
       badGuy1LineObjects[i].dx1 = move1.xSpeed;
@@ -764,11 +764,11 @@ var startGame = function(){
     // badGuy1RoundObjects[1].dy = 1;
     // badGuy1RoundObjects[2].dy = 1;
     if(badGuy1.torso1Ele != null){
-      for(var i=0;i<badGuy1RoundObjects.length;i++){
+      for(var i=0,len=badGuy1RoundObjects.length;i<len;i++){
         badGuy1RoundObjects[i].cx += badGuy1RoundObjects[i].dx;
         badGuy1RoundObjects[i].cy += badGuy1RoundObjects[i].dy;
       }
-      for(var i=0;i<badGuy1LineObjects.length;i++){
+      for(var i=0,len=badGuy1LineObjects.length;i<len;i++){
         badGuy1LineObjects[i].x1 += badGuy1LineObjects[i].dx1;
         badGuy1LineObjects[i].x2 += badGuy1LineObjects[i].dx2;
         badGuy1LineObjects[i].y1 += badGuy1LineObjects[i].dy1;
@@ -776,34 +776,34 @@ var startGame = function(){
       }
 
     }
-    for(var i=0;i<hostageRoundObjects.length;i++){
+    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
       hostageRoundObjects[i].cy += hostageRoundObjects[i].dy;
     }
     
-    for(var i=0;i<hostageLineObjects.length;i++){
+    for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].x1 += hostageLineObjects[i].dx1;
       hostageLineObjects[i].x2 += hostageLineObjects[i].dx2;
       hostageLineObjects[i].y1 += hostageLineObjects[i].dy1;
       hostageLineObjects[i].y2 += hostageLineObjects[i].dy2;
     }
    
-      for(var i=0;i<bloodObjArr.length;i++){
+      for(var i=0,len=bloodObjArr.length;i<len;i++){
         bloodObjArr[i].cx += bloodObjArr[i].dx;
         bloodObjArr[i].cy += bloodObjArr[i].dy;
       }
     
-    for(var i=0;i<ballObjArr.length;i++){
+    for(var i=0,len=ballObjArr.length;i<len;i++){
       ballObjArr[i].cx += ballObjArr[i].dx;
       ballObjArr[i].cy += ballObjArr[i].dy;
     }
-    for(var i=0;i<boardObjectsArr.length;i++){
+    for(var i=0,len=boardObjectsArr.length;i<len;i++){
       boardObjectsArr[i].x1 += boardObjectsArr[i].dx1;
       boardObjectsArr[i].x2 += boardObjectsArr[i].dx2;
       boardObjectsArr[i].y1 += boardObjectsArr[i].dy1;
       boardObjectsArr[i].y2 += boardObjectsArr[i].dy2;
     }
-    for(var i=0;i<ballObjects.length;i++){
+    for(var i=0,len=ballObjects.length;i<len;i++){
       ballObjects[i].cx += ballObjects[i].dx;
 
     }
