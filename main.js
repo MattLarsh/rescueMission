@@ -478,8 +478,6 @@ var startGame = function(){
       createBlood();
       hostageBlood();
       explodeHostage();
-      
-      
       structure.hit = 'done';
     }
   }
@@ -514,8 +512,7 @@ var startGame = function(){
       badGuyRoundObjects[i].dy = 0;
     }
   }
-  // createElipseElement(cx,cy,rx,ry,color,opacity,stroke)
-  // createLineElement(x1,x2,y1,y2,strWdth,color)
+
   var trampoline1Leg1Ele = createLineElement(690,690,525,545,2,'black');
   var trampoline1Leg2Ele = createLineElement(725,725,535,555,2,'black');
   var trampoline1Leg3Ele = createLineElement(760,760,525,545,2,'black');
@@ -530,8 +527,6 @@ var startGame = function(){
   var trampoline3Ele = createElipseElement(385,525,40,10,'#4C4E4B',1,'blue');
   // Begin of Weapon Weapon Weapon ///////////
   
-  
- 
   function fireBall(){
     ballObjects[weapon.whichBall].dx = 10;
     
@@ -587,13 +582,10 @@ var startGame = function(){
       fireBall();
     }
   }
-  
   var triggerColor  = createRectElement(150,55,45,496,1,'#284F23',10);
   var fire = createTextElement(100,530,25,'center',1,'white','FIRE!');
   trigger();
   var heroStep = createRectElement(55,67.5,45.5,461.5,1,'#284F23',0);
-  // function createText(x,y,fontSize,textAnchor,opacity,color,text)
-  // createRectElement(width,height,x,y,opacity,fill,rx)
   var ball1 = createBallElement(240,460,12.5,'white');
   var ball2 = createBallElement(212.5,460,12.5,'white');
   var ball3 = createBallElement(185.5,460,12.5,'white');
@@ -611,18 +603,13 @@ var startGame = function(){
   hero.headEle = createBallElement(75,410,25,'#FFE1CE');
   hero.leftEyeEle = createElipseElement(68,407,8,10,'white');
   hero.rightEyeEle = createElipseElement(82,407,8,10,'white');
-  
   hero.leftEyeColorEle = createElipseElement(70,407,1.5,1.5,'#1E181A');
   hero.rightEyeColorEle = createElipseElement(85,407,1.5,1.5,'#1E181A');
-  // hostage.rightEyeColorEle = createElipseElement(907,95,1.5,1.5,'#1E181A');
-  // hero.hair1Ele = createLineElement(55,100,387,385,7,'#5A3F2A');
-  // hostage.hair2Ele = createLineElement(900,944,69,110,15,'#FFFF01');
   hero.mouthEle = createElipseElement(75,422,4,4,'#1E181A');
   hero.hair1Ele = createLineElement(55,50,388,418,7,'#D1A967');
   hero.hair2Ele = createLineElement(55,100,388,384,12,'#D1A967');
-  // hero.hair3Ele = createLineElement(750,755,62,92,7,'#D1A967');
   // // End HERO 
-  // Begin BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkjasdfasdfadfffdfdfdfdfddffd
+  // Begin BadGuy Number 1 
   var badGuys = {};
   var badGuy1 = {};
   var badGuy1Objects = {};
@@ -716,11 +703,11 @@ var startGame = function(){
     if(move1.jump === 4){
       move1.xSpeed = -6;
     }
-    if(move1.jump === 6){
-      badGuys.create = 'none';
-      resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects)
-      return;
-    }
+    // if(move1.jump === 6){
+    //   badGuys.create = 'none';
+    //   resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects)
+    //   return;
+    // }
     if(badGuy1RoundObjects[0].cx < 390){
       move1.xSpeed = 0;
     }
@@ -753,17 +740,33 @@ var startGame = function(){
 
   var badGuy1LineObjects = [badGuy1Objects.badGuy1LeftEyeBrowObj,badGuy1Objects.badGuy1RightEyeBrowObj,badGuy1Objects.badGuy1Hair3Obj,badGuy1Objects.badGuy1Torso1Obj,badGuy1Objects.badGuy1Torso2Obj,badGuy1Objects.badGuy1Hair1Obj,badGuy1Objects.badGuy1Hair2Obj];
   var badGuy1RoundObjects = [badGuy1Objects.badGuy1HeadObj,badGuy1Objects.badGuy1LeftEyeObj,badGuy1Objects.badGuy1RightEyeObj,badGuy1Objects.badGuy1LeftEyeColorObj,badGuy1Objects.badGuy1RightEyeColorObj,badGuy1Objects.badGuy1MouthObj];
-  // BadGuy Number 1 ;alskdfj;alskdfj;alskfdjas;ldfkj
+  // BadGuy Number 1 
   structure.hit = 0;
 
   var viewWidth = view.width;
   var viewHeight = view.height;
+
+  
+  function collideBallWith(ball,head,func) {
+    if(ball.bottom > head.top && ball.top < head.bottom &&
+       ball.right > head.left && ball.left < head.right) {
+      if(badGuys.create === 'one'){
+        resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects);
+        explode(badGuy1RoundObjects,badGuy1LineObjects,badGuy1);
+        badGuys.create = 'oneDead';
+        ballObjects.splice(weapon.whichBall,1);
+        removeBall();
+      }
+      
+    } 
+    
+    
+      
+   }
+ 
   
   var animate = function(){
-    // badGuy1RoundObjects[0].dy = 1;
-    // badGuy1RoundObjects[1].dy = 1;
-    // badGuy1RoundObjects[2].dy = 1;
-    if(badGuy1.torso1Ele != null){
+    if(badGuys.create === 'one' || 'oneDead'){
       for(var i=0,len=badGuy1RoundObjects.length;i<len;i++){
         badGuy1RoundObjects[i].cx += badGuy1RoundObjects[i].dx;
         badGuy1RoundObjects[i].cy += badGuy1RoundObjects[i].dy;
@@ -774,7 +777,6 @@ var startGame = function(){
         badGuy1LineObjects[i].y1 += badGuy1LineObjects[i].dy1;
         badGuy1LineObjects[i].y2 += badGuy1LineObjects[i].dy2;
       }
-
     }
     for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
@@ -817,7 +819,7 @@ var startGame = function(){
         setTimeout(removeSmallBalls,500);
       }
     }
-    
+  
     if(structure.hit === 1){
       if(boardObjectsArr[weapon.whichBall -1].x1 < 840){
         structureHit1();
@@ -856,15 +858,17 @@ var startGame = function(){
       princessFalling();
     }
     if(badGuys.create === 'none'){
-      explode(badGuy1RoundObjects,badGuy1LineObjects,badGuy1);
-      badGuys.create = 'hi';
+      // explode(badGuy1RoundObjects,badGuy1LineObjects,badGuy1);
+      // badGuys.create = 'hi';
     }
     if(badGuys.create === 'one'){
       badGuy1Movement()
+      collideBallWith(ball1Obj,badGuy1Objects.badGuy1HeadObj);
+      collideBallWith(ball2Obj,badGuy1Objects.badGuy1HeadObj);
+      collideBallWith(ball3Obj,badGuy1Objects.badGuy1HeadObj);
     }
-
     
-   
+    
     
     
     requestAnimationFrame(animate);
