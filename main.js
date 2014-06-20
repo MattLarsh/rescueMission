@@ -185,10 +185,6 @@ var startGame = function(){
     document.getElementById("field").appendChild(newText);
     return newText
   }
-  // <text x="50" y="10" style="writing-mode: tb; glyph-orientation-vertical: 0;
-  //                             letter-spacing: -3;">
-  //   Vertical
-  // </text>
   
   var hostage = {};
   var hostageStuff = {};
@@ -480,7 +476,7 @@ var startGame = function(){
       bloodExplosion(bloodObjArr)
       explodeHostage();
       setTimeout(hostageInjuredText,2500);
-      setTimeout(tryAgain,6000);
+      setTimeout(again,6000,'Try Again');
       structure.hit = 'done';
     }
   }
@@ -490,16 +486,19 @@ var startGame = function(){
     hostageStuff.status = 'gone';
   }
   function heroInjuredText(){
-    console.log(hostageStuff.status);
     if(hostageStuff.status === undefined){
       var heroInjured = createTextElement(330,250,25,'center',1,'red','Our Hero has been fatally injured!','Open Sans');
     }
-    
   }
-  function tryAgain(){
+  
+  function savedPrincessText(){
+    var princessSaved = createTextElement(405,280,25,'center',1,'red','You Saved the Princess!','Open Sans');
+  }
+
+  function again(text){
     // createEllipseElement(cx,cy,rx,ry,color,opacity,stroke)
     var tryAgainEllipse = createEllipseElement(550,325,50,25,'red',1,'white');
-    var tryAgainText = createTextElement(512,330,16,'center',1,'white','Try Again','Open Sans');
+    var tryAgainText = createTextElement(512,330,16,'center',1,'white',text,'Open Sans');
     var clearTryAgainEllipse = createEllipseElement(550,325,50,25,'red',0);
     clearTryAgainEllipse.onclick = function(){
       window.location.reload();
@@ -666,41 +665,78 @@ var startGame = function(){
   // // End HERO 
   // Begin BadGuy Number 1 
   var badGuys = {};
-  var badGuy1 = {};
-  var badGuy1Objects = {};
-  function createBadGuy1(){
-    badGuy1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
-    badGuy1.torso2Ele = createLineElement(710,744,120,120.5,30,'#DE5D25');
-    badGuy1.headEle = createBallElement(727.5,80,27,'#FFE1CE');
-    badGuy1.leftEyeEle = createEllipseElement(721,78,8,10,'white');
-    badGuy1.rightEyeEle = createEllipseElement(734,78,8,10,'white');
-    badGuy1.leftEyeColorEle = createEllipseElement(717,78,1.5,1.5,'red');
-    badGuy1.rightEyeColorEle = createEllipseElement(731,78,1.5,1.5,'red');
-    badGuy1.hair1Ele = createLineElement(705,700,65,95,7,'#F1EFBE');
-    badGuy1.hair2Ele = createLineElement(705,745,60,56,12,'#F1EFBE');
-    badGuy1.hair3Ele = createLineElement(750,755,62,92,7,'#F1EFBE');
-    badGuy1.mouthEle = createEllipseElement(728,96,4,4,'#1E181A');
-    badGuy1.rightEyeBrowEle = createLineElement(714,725,61,68,1.5,'black');
-    badGuy1.leftEyeBrowEle = createLineElement(727,738,68,57,1.5,'black');
-    badGuy1Objects.badGuy1HeadObj = createBallObj(badGuy1.headEle);
-    badGuy1Objects.badGuy1LeftEyeObj = createEllipseObj(badGuy1.leftEyeEle);
-    badGuy1Objects.badGuy1RightEyeObj = createEllipseObj(badGuy1.rightEyeEle);
-    badGuy1Objects.badGuy1LeftEyeColorObj = createEllipseObj(badGuy1.leftEyeColorEle);
-    badGuy1Objects.badGuy1RightEyeColorObj = createEllipseObj(badGuy1.rightEyeColorEle);
-    badGuy1Objects.badGuy1MouthObj = createEllipseObj(badGuy1.mouthEle);
-    badGuy1Objects.badGuy1Torso1Obj = createLineObject(badGuy1.torso1Ele);
-    badGuy1Objects.badGuy1Torso2Obj = createLineObject(badGuy1.torso2Ele);
-    badGuy1Objects.badGuy1Hair1Obj = createLineObject(badGuy1.hair1Ele);
-    badGuy1Objects.badGuy1Hair2Obj = createLineObject(badGuy1.hair2Ele);
-    badGuy1Objects.badGuy1Hair1Obj = createLineObject(badGuy1.hair1Ele);
-    badGuy1Objects.badGuy1Hair2Obj = createLineObject(badGuy1.hair2Ele);
-    badGuy1Objects.badGuy1Hair3Obj = createLineObject(badGuy1.hair3Ele);
-    badGuy1Objects.badGuy1RightEyeBrowObj = createLineObject(badGuy1.leftEyeBrowEle);
-    badGuy1Objects.badGuy1LeftEyeBrowObj = createLineObject(badGuy1.rightEyeBrowEle);
-    badGuys.create = 'one';
+  var bG1 = {};
+  var bG1Objects = {};
+  function createbG1(){
+    bG1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
+    bG1.torso2Ele = createLineElement(710,744,120,120.5,30,'#DE5D25');
+    bG1.headEle = createBallElement(727.5,80,27,'#FFE1CE');
+    bG1.leftEyeEle = createEllipseElement(721,78,8,10,'white');
+    bG1.rightEyeEle = createEllipseElement(734,78,8,10,'white');
+    bG1.leftEyeColorEle = createEllipseElement(717,78,1.5,1.5,'red');
+    bG1.rightEyeColorEle = createEllipseElement(731,78,1.5,1.5,'red');
+    bG1.hair1Ele = createLineElement(705,700,65,95,7,'#F1EFBE');
+    bG1.hair2Ele = createLineElement(705,745,60,56,12,'#F1EFBE');
+    bG1.hair3Ele = createLineElement(750,755,62,92,7,'#F1EFBE');
+    bG1.mouthEle = createEllipseElement(728,96,4,4,'#1E181A');
+    bG1.rightEyeBrowEle = createLineElement(714,725,61,68,1.5,'black');
+    bG1.leftEyeBrowEle = createLineElement(727,738,68,57,1.5,'black');
+    bG1Objects.bG1HeadObj = createBallObj(bG1.headEle);
+    bG1Objects.bG1LeftEyeObj = createEllipseObj(bG1.leftEyeEle);
+    bG1Objects.bG1RightEyeObj = createEllipseObj(bG1.rightEyeEle);
+    bG1Objects.bG1LeftEyeColorObj = createEllipseObj(bG1.leftEyeColorEle);
+    bG1Objects.bG1RightEyeColorObj = createEllipseObj(bG1.rightEyeColorEle);
+    bG1Objects.bG1MouthObj = createEllipseObj(bG1.mouthEle);
+    bG1Objects.bG1Torso1Obj = createLineObject(bG1.torso1Ele);
+    bG1Objects.bG1Torso2Obj = createLineObject(bG1.torso2Ele);
+    bG1Objects.bG1Hair1Obj = createLineObject(bG1.hair1Ele);
+    bG1Objects.bG1Hair2Obj = createLineObject(bG1.hair2Ele);
+    bG1Objects.bG1Hair1Obj = createLineObject(bG1.hair1Ele);
+    bG1Objects.bG1Hair2Obj = createLineObject(bG1.hair2Ele);
+    bG1Objects.bG1Hair3Obj = createLineObject(bG1.hair3Ele);
+    bG1Objects.bG1RightEyeBrowObj = createLineObject(bG1.leftEyeBrowEle);
+    bG1Objects.bG1LeftEyeBrowObj = createLineObject(bG1.rightEyeBrowEle);
+    badGuys.status = 'one';
   }
   
-  createBadGuy1()
+  createbG1()
+
+  var bG2 = {};
+  var bG2Objects = {};
+  function createbG2(){
+    bG2.torso1Ele = createLineElement(700,754,100,100,18,'#3B016A');
+    bG2.torso2Ele = createLineElement(710,744,120,120.5,30,'#3B016A');
+    bG2.headEle = createBallElement(727.5,82,27,'#FFE1CE');
+    bG2.leftEyeEle = createEllipseElement(721,78,8,10,'white');
+    bG2.rightEyeEle = createEllipseElement(734,78,9,11,'white');
+    bG2.leftEyeColorEle = createEllipseElement(717,78,2,2,'red');
+    bG2.rightEyeColorEle = createEllipseElement(731,78,2,2,'red');
+    bG2.hair1Ele = createLineElement(705,700,65,95,7,'black');
+    bG2.hair2Ele = createLineElement(705,747,60,56,12,'black');
+    bG2.hair3Ele = createLineElement(750,755,60,92,7,'black');
+    bG2.mouthEle = createEllipseElement(728,96,4,4,'#1E181A');
+    bG2.rightEyeBrowEle = createLineElement(714,725,64,71,1.5,'black');
+    bG2.leftEyeBrowEle = createLineElement(727,738,71,60,1.5,'black');
+    bG2Objects.HeadObj = createBallObj(bG2.headEle);
+    bG2Objects.LeftEyeObj = createEllipseObj(bG2.leftEyeEle);
+    bG2Objects.RightEyeObj = createEllipseObj(bG2.rightEyeEle);
+    bG2Objects.LeftEyeColorObj = createEllipseObj(bG2.leftEyeColorEle);
+    bG2Objects.RightEyeColorObj = createEllipseObj(bG2.rightEyeColorEle);
+    bG2Objects.MouthObj = createEllipseObj(bG2.mouthEle);
+    bG2Objects.Torso1Obj = createLineObject(bG2.torso1Ele);
+    bG2Objects.Torso2Obj = createLineObject(bG2.torso2Ele);
+    bG2Objects.Hair2Obj = createLineObject(bG2.hair2Ele);
+    bG2Objects.Hair1Obj = createLineObject(bG2.hair1Ele);
+    bG2Objects.Hair3Obj = createLineObject(bG2.hair3Ele);
+    bG2Objects.RightEyeBrowObj = createLineObject(bG2.leftEyeBrowEle);
+    bG2Objects.LeftEyeBrowObj = createLineObject(bG2.rightEyeBrowEle);
+    bG2Objects.lineArr = [bG2Objects.LeftEyeBrowObj,bG2Objects.RightEyeBrowObj,bG2Objects.Hair3Obj,bG2Objects.Torso1Obj,bG2Objects.Torso2Obj,bG2Objects.Hair2Obj,bG2Objects.Hair1Obj];
+    bG2Objects.roundArr = [bG2Objects.HeadObj,bG2Objects.LeftEyeObj,bG2Objects.RightEyeObj,bG2Objects.LeftEyeColorObj,bG2Objects.RightEyeColorObj,bG2Objects.MouthObj];
+    badGuys.status = 'two';
+  }
+
+  
+
 
   function explode(roundObjects,lineObjects,person){
     var x;
@@ -733,11 +769,12 @@ var startGame = function(){
     for(var key in person){
       person[key].remove();
     }
-    
     for(var i=0;i<heroStuff.bloodEleArr.length;i++){
       heroStuff.bloodEleArr[i].remove();
     }
-    heroStuff.status = 'dead'
+    if(badGuys.status === 'oneDead'){
+      createbG2();
+    }
   }
 
   var move1 = {};
@@ -745,8 +782,8 @@ var startGame = function(){
   move1.ySpeed = 4;
   move1.xSpeed = 0;
   move1.jump = 0;
-  function badGuy1Movement(){
-    if(badGuy1RoundObjects[0].cy > 470 && move1.badDir === 'down'){
+  function bG1Movement(){
+    if(bG1RoundObjects[0].cy > 470 && move1.badDir === 'down'){
       move1.ySpeed *= -1;
       move1.badDir = 'up'
       move1.jump++;
@@ -755,21 +792,21 @@ var startGame = function(){
     if(move1.jump === 2){
       move1.xSpeed = -6;
     }
-    if(badGuy1RoundObjects[0].cx < 560){
+    if(bG1RoundObjects[0].cx < 560){
       move1.xSpeed = 0;
     }
     if(move1.jump === 4){
       move1.xSpeed = -6;
     }
-    if(badGuy1RoundObjects[0].cx < 390){
+    if(bG1RoundObjects[0].cx < 390){
       move1.xSpeed = 0;
     }
-    if(move1.jump === 6 && badGuy1RoundObjects[0].cx < 75){
+    if(move1.jump === 6 && bG1RoundObjects[0].cx < 75){
       move1.xSpeed = -8;
-      if(badGuy1RoundObjects[0].cy > 397){
-        badGuys.create = 'won';
-        setTimeout(moveBadGuy1Eyes,1000);
-        resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects);
+      if(bG1RoundObjects[0].cy > 397){
+        badGuys.status = 'won';
+        setTimeout(movebG1Eyes,1000);
+        resetBadGuy(bG1LineObjects,bG1RoundObjects);
         explode(heroRoundObjects,heroLineObjects,hero);
         createBlood(heroStuff.bloodEleArr,heroStuff.bloodObjArr,70,427);
         heroStuff.status = 'inTrouble';
@@ -784,44 +821,123 @@ var startGame = function(){
       move1.xSpeed = -8;
       
     }
-    if(badGuy1RoundObjects[0].cx < 75){
+    if(bG1RoundObjects[0].cx < 75){
       move1.xSpeed = 0;
     }
-    if(badGuy1RoundObjects[0].cy > 120 ){
+    if(bG1RoundObjects[0].cy > 120 ){
       move1.ySpeed += 0.25;
     }
-    if(badGuy1RoundObjects[0].cy > 400 ){
+    if(bG1RoundObjects[0].cy > 400 ){
       move1.ySpeed -= 0.25;
     }
     if(move1.jump === 7){
       
     }
-    if(badGuy1RoundObjects[0].cy < 170 && move1.badDir === 'up'){
+    if(bG1RoundObjects[0].cy < 170 && move1.badDir === 'up'){
       move1.ySpeed *= -1;
       move1.ySpeed += 0.25;
       move1.badDir = 'down'
     }
-    for(var i=0,len=badGuy1RoundObjects.length;i<len;i++){
-      badGuy1RoundObjects[i].dy = move1.ySpeed;
-      badGuy1RoundObjects[i].dx = move1.xSpeed;
+    for(var i=0,len=bG1RoundObjects.length;i<len;i++){
+      bG1RoundObjects[i].dy = move1.ySpeed;
+      bG1RoundObjects[i].dx = move1.xSpeed;
     }
-    for(var i=0,len=badGuy1LineObjects.length;i<len;i++){
-      badGuy1LineObjects[i].dy1 = move1.ySpeed;
-      badGuy1LineObjects[i].dy2 = move1.ySpeed;
-      badGuy1LineObjects[i].dx1 = move1.xSpeed;
-      badGuy1LineObjects[i].dx2 = move1.xSpeed;
+    for(var i=0,len=bG1LineObjects.length;i<len;i++){
+      bG1LineObjects[i].dy1 = move1.ySpeed;
+      bG1LineObjects[i].dy2 = move1.ySpeed;
+      bG1LineObjects[i].dx1 = move1.xSpeed;
+      bG1LineObjects[i].dx2 = move1.xSpeed;
     }
   }
-  function moveBadGuy1Eyes(){
-    badGuy1Objects.badGuy1LeftEyeColorObj.cx += 7;
-    badGuy1Objects.badGuy1RightEyeColorObj.cx += 7;
+  var move2 = {};
+  move2.badDir = 'down';
+  move2.ySpeed = 4;
+  move2.xSpeed = 0;
+  move2.jump = 0;
+  function bG2Movement(){
+    if(bG2Objects.roundArr[0].cy > 470 && move2.badDir === 'down'){
+      move2.ySpeed *= -1; 
+      move2.badDir = 'up'
+      move2.jump++;
+    }
+
+    if(move2.jump === 2){
+      move2.xSpeed = -6;
+    }
+    if(bG2Objects.roundArr[0].cx < 560){
+      move2.xSpeed = 0;
+    }
+    if(move2.jump === 4){
+      move2.xSpeed = -6;
+    }
+    if(bG2Objects.roundArr[0].cx < 390){
+      move2.xSpeed = 0;
+    }
+    if(move2.jump === 6 && bG2Objects.roundArr[0].cx < 75){
+      move2.xSpeed = -8;
+      if(bG2Objects.roundArr[0].cy > 397){
+        badGuys.status = 'won';
+        setTimeout(movebG2Eyes,1000);
+        resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
+        explode(heroRoundObjects,heroLineObjects,hero);
+        createBlood(heroStuff.bloodEleArr,heroStuff.bloodObjArr,70,427);
+        heroStuff.status = 'inTrouble';
+        bloodExplosion(heroStuff.bloodObjArr);
+        setTimeout(fireBall,1600);
+        setTimeout(fireBall,2800);
+        setTimeout(fireBall,4100);
+        return;
+      }
+    }
+    if(move2.jump === 6){
+      move2.xSpeed = -8;
+      
+    }
+    if(bG2Objects.roundArr[0].cx < 75){
+      move2.xSpeed = 0;
+    }
+    if(bG2Objects.roundArr[0].cy > 120 ){
+      move2.ySpeed += 0.25;
+    }
+    if(bG2Objects.roundArr[0].cy > 400 ){
+      move2.ySpeed -= 0.25;
+    }
+    if(move2.jump === 7){
+      
+    }
+    if(bG2Objects.roundArr[0].cy < 170 && move2.badDir === 'up'){
+      move2.ySpeed *= -1;
+      move2.ySpeed += 0.25;
+      move2.badDir = 'down'
+    }
+    for(var i=0,len=bG2Objects.roundArr.length;i<len;i++){
+      bG2Objects.roundArr[i].dy = move2.ySpeed;
+      bG2Objects.roundArr[i].dx = move2.xSpeed;
+    }
+    for(var i=0,len=bG2Objects.lineArr.length;i<len;i++){
+      bG2Objects.lineArr[i].dy1 = move2.ySpeed;
+      bG2Objects.lineArr[i].dy2 = move2.ySpeed;
+      bG2Objects.lineArr[i].dx1 = move2.xSpeed;
+      bG2Objects.lineArr[i].dx2 = move2.xSpeed;
+    }
+  }
+  function movebG1Eyes(){
+    bG1Objects.bG1LeftEyeColorObj.cx += 7;
+    bG1Objects.bG1RightEyeColorObj.cx += 7;
+  }
+  function movebG2Eyes(){
+    bG2Objects.LeftEyeColorObj.cx += 7;
+    bG2Objects.RightEyeColorObj.cx += 7;
   }
 
 
   
 
-  var badGuy1LineObjects = [badGuy1Objects.badGuy1LeftEyeBrowObj,badGuy1Objects.badGuy1RightEyeBrowObj,badGuy1Objects.badGuy1Hair3Obj,badGuy1Objects.badGuy1Torso1Obj,badGuy1Objects.badGuy1Torso2Obj,badGuy1Objects.badGuy1Hair1Obj,badGuy1Objects.badGuy1Hair2Obj];
-  var badGuy1RoundObjects = [badGuy1Objects.badGuy1HeadObj,badGuy1Objects.badGuy1LeftEyeObj,badGuy1Objects.badGuy1RightEyeObj,badGuy1Objects.badGuy1LeftEyeColorObj,badGuy1Objects.badGuy1RightEyeColorObj,badGuy1Objects.badGuy1MouthObj];
+  var bG1LineObjects = [bG1Objects.bG1LeftEyeBrowObj,bG1Objects.bG1RightEyeBrowObj,bG1Objects.bG1Hair3Obj,bG1Objects.bG1Torso1Obj,bG1Objects.bG1Torso2Obj,bG1Objects.bG1Hair1Obj,bG1Objects.bG1Hair2Obj];
+  var bG1RoundObjects = [bG1Objects.bG1HeadObj,bG1Objects.bG1LeftEyeObj,bG1Objects.bG1RightEyeObj,bG1Objects.bG1LeftEyeColorObj,bG1Objects.bG1RightEyeColorObj,bG1Objects.bG1MouthObj];
+  
+  
+
   // BadGuy Number 1 
   structure.hit = 0;
 
@@ -832,35 +948,39 @@ var startGame = function(){
   function collideBallWith(ball,head,func) {
     if(ball.bottom > head.top && ball.top < head.bottom &&
        ball.right > head.left && ball.left < head.right) {
-      if(badGuys.create === 'one'){
-        resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects);
-        explode(badGuy1RoundObjects,badGuy1LineObjects,badGuy1);
-        badGuys.create = 'oneDead';
+      if(badGuys.status === 'one'){
+        resetBadGuy(bG1LineObjects,bG1RoundObjects);
+        explode(bG1RoundObjects,bG1LineObjects,bG1);
+        badGuys.status = 'oneDead';
         ballObjects.splice(weapon.whichBall,1);
         removeBall();
-        
       }
-      
-    } 
-    
-    
-      
+      if(badGuys.status === 'two'){
+        resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
+        explode(bG2Objects.roundArr,bG2Objects.lineArr,bG1);
+        badGuys.status = 'twoAlmostDead';
+        ballObjects.splice(weapon.whichBall,1);
+        removeBall();
+      }
+    }  
    }
-   badGuys.create = 'hi';
+  badGuys.status = 'start';
   var clearStartButton = document.getElementById('clearStartEllipse');
   var startButton = document.getElementById('startEllipse');
   var startText = document.getElementById('start');
   clearStartButton.onclick = function(){
-    badGuys.create = 'one';
+    badGuys.status = 'one';
     startButton.remove();
     startText.remove();
     clearStartButton.remove();
   };
   
   var animate = function(){
-    if(heroStuff.status === 'dead'){
-      setTimeout(heroInjuredText,8000);
-      heroStuff.status = 'gone';
+    // console.log(bG1Objects.bG1HeadObj);
+    if(badGuys.status === 'twoAlmostDead'){
+      setTimeout(savedPrincessText,2500);
+      setTimeout(again,2500,'Save Again');
+      badGuys.status = 'twoDead';
     }
     if(heroStuff.status === 'inTrouble'){
       for(var i=0,len=heroRoundObjects.length;i<len;i++){
@@ -874,23 +994,51 @@ var startGame = function(){
         heroLineObjects[i].y2 += heroLineObjects[i].dy2;
       }
     }
-    if(badGuys.create === 'one' || 'oneDead'){
-      for(var i=0,len=badGuy1RoundObjects.length;i<len;i++){
-        badGuy1RoundObjects[i].cx += badGuy1RoundObjects[i].dx;
-        badGuy1RoundObjects[i].cy += badGuy1RoundObjects[i].dy;
+    
+    if(badGuys.status === 'one' || badGuys.status === 'oneDead'){
+      for(var i=0,len=bG1RoundObjects.length;i<len;i++){
+        bG1RoundObjects[i].cx += bG1RoundObjects[i].dx;
+        bG1RoundObjects[i].cy += bG1RoundObjects[i].dy;
       }
-      for(var i=0,len=badGuy1LineObjects.length;i<len;i++){
-        badGuy1LineObjects[i].x1 += badGuy1LineObjects[i].dx1;
-        badGuy1LineObjects[i].x2 += badGuy1LineObjects[i].dx2;
-        badGuy1LineObjects[i].y1 += badGuy1LineObjects[i].dy1;
-        badGuy1LineObjects[i].y2 += badGuy1LineObjects[i].dy2;
+      for(var i=0,len=bG1LineObjects.length;i<len;i++){
+        bG1LineObjects[i].x1 += bG1LineObjects[i].dx1;
+        bG1LineObjects[i].x2 += bG1LineObjects[i].dx2;
+        bG1LineObjects[i].y1 += bG1LineObjects[i].dy1;
+        bG1LineObjects[i].y2 += bG1LineObjects[i].dy2;
       }
     }
+    
+    if(badGuys.status === 'two' || badGuys.status === 'twoDead'){
+      
+      for(var i=0,len=bG2Objects.roundArr.length;i<len;i++){
+        bG2Objects.roundArr[i].cx += bG2Objects.roundArr[i].dx;
+        bG2Objects.roundArr[i].cy += bG2Objects.roundArr[i].dy;
+      }
+      for(var i=0,len=bG2Objects.lineArr.length;i<len;i++){
+        bG2Objects.lineArr[i].x1 += bG2Objects.lineArr[i].dx1;
+        bG2Objects.lineArr[i].x2 += bG2Objects.lineArr[i].dx2;
+        bG2Objects.lineArr[i].y1 += bG2Objects.lineArr[i].dy1;
+        bG2Objects.lineArr[i].y2 += bG2Objects.lineArr[i].dy2;
+      }
+    }
+    if(badGuys.status === 'one'){
+      bG1Movement();
+      collideBallWith(ball1Obj,bG1Objects.bG1HeadObj);
+      collideBallWith(ball2Obj,bG1Objects.bG1HeadObj);
+      collideBallWith(ball3Obj,bG1Objects.bG1HeadObj);
+    }
+    
+    if(badGuys.status === 'two'){
+      bG2Movement();
+      collideBallWith(ball1Obj,bG2Objects.HeadObj);
+      collideBallWith(ball2Obj,bG2Objects.HeadObj);
+      collideBallWith(ball3Obj,bG2Objects.HeadObj);
+    }
+
     for(var i=0,len=hostageRoundObjects.length;i<len;i++){
       hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
       hostageRoundObjects[i].cy += hostageRoundObjects[i].dy;
     }
-    
     for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].x1 += hostageLineObjects[i].dx1;
       hostageLineObjects[i].x2 += hostageLineObjects[i].dx2;
@@ -971,16 +1119,7 @@ var startGame = function(){
     if(structure.hit === 'pricessFalling'){
       princessFalling();
     }
-    if(badGuys.create === 'none'){
-      // explode(badGuy1RoundObjects,badGuy1LineObjects,badGuy1);
-      // badGuys.create = 'hi';
-    }
-    if(badGuys.create === 'one'){
-      badGuy1Movement()
-      collideBallWith(ball1Obj,badGuy1Objects.badGuy1HeadObj);
-      collideBallWith(ball2Obj,badGuy1Objects.badGuy1HeadObj);
-      collideBallWith(ball3Obj,badGuy1Objects.badGuy1HeadObj);
-    }
+    
     
     
     
