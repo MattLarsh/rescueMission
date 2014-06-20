@@ -612,22 +612,29 @@ var startGame = function(){
   
   var pipe = createRectElement(150,35,100,441.5,1,'#92BCC8',14);
   var pipe2 = createRectElement(35,85,100,441.5,1,'#92BCC8',5);
-  var triggerColor2  = createRectElement(150,55,45,496,1,'#284F23',10);
-  var heroStep = createRectElement(55,67.5,45.5,461.5,1,'#284F23',0);
-  var red  = createEllipseElement(125,525,55,17.5,'red',1,'white');
-  var capOfGun = createEllipseElement(238,460,12,18,'white',0.25,'black');
-  var fire = createTextElement(102,532,19,'center',1,'white','Push','Open Sans');
-  trigger();
   
+  var heroStep = createRectElement(55,67.5,45.5,461.5,1,'#284F23',0);
+  
+  var capOfGun = createEllipseElement(238,460,12,18,'white',0.25,'black');
   var ball1 = createBallElement(240,460,12.5,'white');
-  var ball2 = createBallElement(212.5,460,12.5,'white');
-  var ball3 = createBallElement(185.5,460,12.5,'white');
+  var ball2 = createBallElement(210,460,12.5,'white');
+  var ball3 = createBallElement(180,460,12.5,'white');
+  var ball4 = createBallElement(150,460,12.5,'white');
+  var ball5 = createBallElement(120,460,12.5,'white');
+  var ball6 = createBallElement(120,490,12.5,'white');
+  var triggerColor2  = createRectElement(150,55,45,496,1,'#284F23',10);
+  var red  = createEllipseElement(125,525,55,17.5,'red',1,'white');
+  var push = createTextElement(102,532,19,'center',1,'white','Push','Open Sans');
+  trigger();
   weapon.whichBall = 0;
   var ball1Obj = createBallObj(ball1);
   var ball2Obj = createBallObj(ball2);
   var ball3Obj = createBallObj(ball3);
-  var ballObjects = [ball1Obj,ball2Obj,ball3Obj];
-  var ballEleArr = [ball1,ball2,ball3];
+  var ball4Obj = createBallObj(ball4);
+  var ball5Obj = createBallObj(ball5);
+  var ball6Obj = createBallObj(ball6);
+  var ballObjects = [ball1Obj,ball2Obj,ball3Obj,ball4Obj,ball5Obj,ball6Obj];
+  var ballEleArr = [ball1,ball2,ball3,ball4,ball5,ball6];
   
   // End of Weapon Weapon Weapon 
   // HERO 
@@ -946,23 +953,33 @@ var startGame = function(){
   
   
   function collideBallWith(ball,head,func) {
-    if(ball.bottom > head.top && ball.top < head.bottom &&
-       ball.right > head.left && ball.left < head.right) {
-      if(badGuys.status === 'one'){
-        resetBadGuy(bG1LineObjects,bG1RoundObjects);
-        explode(bG1RoundObjects,bG1LineObjects,bG1);
-        badGuys.status = 'oneDead';
-        ballObjects.splice(weapon.whichBall,1);
-        removeBall();
-      }
-      if(badGuys.status === 'two'){
-        resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
-        explode(bG2Objects.roundArr,bG2Objects.lineArr,bG1);
-        badGuys.status = 'twoAlmostDead';
-        ballObjects.splice(weapon.whichBall,1);
-        removeBall();
-      }
-    }  
+    if(ball.bottom != undefined){
+      if(ball.bottom > head.top && ball.top < head.bottom &&
+         ball.right > head.left && ball.left < head.right) {
+        if(badGuys.status === 'one'){
+          resetBadGuy(bG1LineObjects,bG1RoundObjects);
+          explode(bG1RoundObjects,bG1LineObjects,bG1);
+          badGuys.status = 'oneDead';
+          ballObjects.splice(weapon.whichBall,1);
+          removeBall();
+        }
+        if(badGuys.status === 'two'){
+          resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
+          explode(bG2Objects.roundArr,bG2Objects.lineArr,bG2);
+          badGuys.status = 'twoAlmostDead';
+          ballObjects.splice(weapon.whichBall,1);
+          removeBall();
+        }
+        for(i=0,len=ballObjects.length;i<len;i++){
+          if(i <= 3){
+            ballObjects[i].cx += 30;
+          }
+          if(i == 4){
+            ballObjects[i].cy -= 30
+          }
+        }
+      } 
+    } 
    }
   badGuys.status = 'start';
   var clearStartButton = document.getElementById('clearStartEllipse');
@@ -976,7 +993,7 @@ var startGame = function(){
   };
   
   var animate = function(){
-    // console.log(bG1Objects.bG1HeadObj);
+    
     if(badGuys.status === 'twoAlmostDead'){
       setTimeout(savedPrincessText,2500);
       setTimeout(again,2500,'Save Again');
@@ -1023,16 +1040,12 @@ var startGame = function(){
     }
     if(badGuys.status === 'one'){
       bG1Movement();
-      collideBallWith(ball1Obj,bG1Objects.bG1HeadObj);
-      collideBallWith(ball2Obj,bG1Objects.bG1HeadObj);
-      collideBallWith(ball3Obj,bG1Objects.bG1HeadObj);
+      collideBallWith(ballObjects[0],bG1Objects.bG1HeadObj);
     }
     
     if(badGuys.status === 'two'){
       bG2Movement();
-      collideBallWith(ball1Obj,bG2Objects.HeadObj);
-      collideBallWith(ball2Obj,bG2Objects.HeadObj);
-      collideBallWith(ball3Obj,bG2Objects.HeadObj);
+      collideBallWith(ballObjects[0],bG2Objects.HeadObj);
     }
 
     for(var i=0,len=hostageRoundObjects.length;i<len;i++){
@@ -1078,6 +1091,14 @@ var startGame = function(){
         removeBall();
         ballExplode();
         ballObjects.splice(0,1);
+        for(i=0,len=ballObjects.length;i<len;i++){
+          if(i <= 3){
+            ballObjects[i].cx += 30;
+          }
+          if(i == 4){
+            ballObjects[i].cy -= 30
+          }
+        }
         setTimeout(removeSmallBalls,500);
       }
     }
@@ -1119,9 +1140,6 @@ var startGame = function(){
     if(structure.hit === 'pricessFalling'){
       princessFalling();
     }
-    
-    
-    
     
     
     requestAnimationFrame(animate);
