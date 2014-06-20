@@ -135,7 +135,7 @@ var startGame = function(){
     return r;
   }
 
-  var createElipseObj = function(e){
+  var createEllipseObj = function(e){
     var r = {};
     r.dx = 0;
     r.dy = 0;
@@ -159,17 +159,17 @@ var startGame = function(){
     return r;
   };
 
-  function createElipseElement(cx,cy,rx,ry,color,opacity,stroke) {
-    var newElipse = document.createElementNS(svgNS,"ellipse");
-    newElipse.setAttributeNS(null,"cx",cx);  
-    newElipse.setAttributeNS(null,"cy",cy);    
-    newElipse.setAttributeNS(null,"rx",rx);  
-    newElipse.setAttributeNS(null,"ry",ry);    
-    newElipse.setAttributeNS(null,"fill",color);
-    newElipse.setAttributeNS(null,"fill-opacity",opacity); 
-    newElipse.setAttributeNS(null,"stroke",stroke);    
-    document.getElementById("field").appendChild(newElipse);
-    return newElipse;
+  function createEllipseElement(cx,cy,rx,ry,color,opacity,stroke) {
+    var newEllipse = document.createElementNS(svgNS,"ellipse");
+    newEllipse.setAttributeNS(null,"cx",cx);  
+    newEllipse.setAttributeNS(null,"cy",cy);    
+    newEllipse.setAttributeNS(null,"rx",rx);  
+    newEllipse.setAttributeNS(null,"ry",ry);    
+    newEllipse.setAttributeNS(null,"fill",color);
+    newEllipse.setAttributeNS(null,"fill-opacity",opacity); 
+    newEllipse.setAttributeNS(null,"stroke",stroke);    
+    document.getElementById("field").appendChild(newEllipse);
+    return newEllipse;
   }
   function createTextElement(x,y,fontSize,textAnchor,opacity,color,text,fontFamily) {
     var newText = document.createElementNS(svgNS,"text");
@@ -191,15 +191,16 @@ var startGame = function(){
   // </text>
   
   var hostage = {};
+  var hostageStuff = {};
   //Start blood
   var bloodEleArr = [];
   var bloodObjArr = [];
   function createBlood(eleArr,objArr,x,y){
     for(var i=0;i<200;i++){
-      eleArr[i] = createElipseElement(x,y,5,5,'red');
+      eleArr[i] = createEllipseElement(x,y,5,5,'red');
     }
     for(var i=0;i<200;i++){
-      objArr[i] = createElipseObj(eleArr[i]);
+      objArr[i] = createEllipseObj(eleArr[i]);
     }
     
   }
@@ -230,20 +231,20 @@ var startGame = function(){
   hostage.torso1Ele = createLineElement(873,927,120,120,18,'#FFB1E5');
   hostage.torso2Ele = createLineElement(880,917,130,130,30,'#FFB1E5');
   hostage.headEle = createBallElement(900,100,25,'#FFE1CE');
-  hostage.leftEyeEle = createElipseElement(894,97,8,10,'white');
-  hostage.rightEyeEle = createElipseElement(906,97,8,10,'white');
-  hostage.leftEyeColorEle = createElipseElement(894,95,1.5,1.5,'#1E181A');
-  hostage.rightEyeColorEle = createElipseElement(907,95,1.5,1.5,'#1E181A');
+  hostage.leftEyeEle = createEllipseElement(894,97,8,10,'white');
+  hostage.rightEyeEle = createEllipseElement(906,97,8,10,'white');
+  hostage.leftEyeColorEle = createEllipseElement(894,95,1.5,1.5,'#1E181A');
+  hostage.rightEyeColorEle = createEllipseElement(907,95,1.5,1.5,'#1E181A');
   hostage.hair1Ele = createLineElement(858,905,104,70,15,'#FFFF01');
   hostage.hair2Ele = createLineElement(900,944,69,110,15,'#FFFF01');
-  hostage.mouthEle = createElipseElement(902,112,4,4,'#1E181A');
+  hostage.mouthEle = createEllipseElement(902,112,4,4,'#1E181A');
   
   var hostageHeadObj = createBallObj(hostage.headEle);
-  var hostageLeftEyeObj = createElipseObj(hostage.leftEyeEle);
-  var hostageRightEyeObj = createElipseObj(hostage.rightEyeEle);
-  var hostageLeftEyeColorObj = createElipseObj(hostage.leftEyeColorEle);
-  var hostageRightEyeColorObj = createElipseObj(hostage.rightEyeColorEle);
-  var hostageMouthObj = createElipseObj(hostage.mouthEle);
+  var hostageLeftEyeObj = createEllipseObj(hostage.leftEyeEle);
+  var hostageRightEyeObj = createEllipseObj(hostage.rightEyeEle);
+  var hostageLeftEyeColorObj = createEllipseObj(hostage.leftEyeColorEle);
+  var hostageRightEyeColorObj = createEllipseObj(hostage.rightEyeColorEle);
+  var hostageMouthObj = createEllipseObj(hostage.mouthEle);
   var hostageTorso1Obj = createLineObject(hostage.torso1Ele);
   var hostageTorso2Obj = createLineObject(hostage.torso2Ele);
   var hostageHair1Obj = createLineObject(hostage.hair1Ele);
@@ -466,7 +467,6 @@ var startGame = function(){
     }
   }
   function princessFalling(){
-    
     for(var i=0,len=hostageLineObjects.length;i<len;i++){
       hostageLineObjects[i].dy1 = 5;
       hostageLineObjects[i].dy2 = 5;
@@ -479,10 +479,36 @@ var startGame = function(){
       createBlood(bloodEleArr,bloodObjArr,921,346)
       bloodExplosion(bloodObjArr)
       explodeHostage();
+      setTimeout(hostageInjuredText,2500);
+      setTimeout(tryAgain,6000);
       structure.hit = 'done';
     }
   }
-  
+  // createTextElement(x,y,fontSize,textAnchor,opacity,color,text,fontFamily)
+  function hostageInjuredText(){
+    var princessInjured = createTextElement(330,280,25,'center',1,'red','The Princess has been fatally injured!','Open Sans');
+    hostageStuff.status = 'gone';
+  }
+  function heroInjuredText(){
+    console.log(hostageStuff.status);
+    if(hostageStuff.status === undefined){
+      var heroInjured = createTextElement(330,250,25,'center',1,'red','Our Hero has been fatally injured!','Open Sans');
+    }
+    
+  }
+  function tryAgain(){
+    // createEllipseElement(cx,cy,rx,ry,color,opacity,stroke)
+    var tryAgainEllipse = createEllipseElement(550,325,50,25,'red',1,'white');
+    var tryAgainText = createTextElement(512,330,16,'center',1,'white','Try Again','Open Sans');
+    var clearTryAgainEllipse = createEllipseElement(550,325,50,25,'red',0);
+    clearTryAgainEllipse.onclick = function(){
+      window.location.reload();
+    };
+  }
+ 
+  // <ellipse id='startEllipse' cx='550' cy='240' fill='red' rx='50' ry='25' stroke='white'/>
+  // <text id='start' x='515' y='245' fill='white' font-size='13' font-family='Open Sans' >Start Game</text>
+  // <ellipse id='clearStartEllipse' cx='550' cy='240' fill='red' rx='50' ry='25' opacity='0' stroke='white'/>
   function boardReset(){
     for(var i=0,len=boardObjectsArr.length;i<len;i++){
         boardObjectsArr[i].dx1 = 0;
@@ -517,15 +543,15 @@ var startGame = function(){
   var trampoline1Leg1Ele = createLineElement(690,690,525,545,2,'black');
   var trampoline1Leg2Ele = createLineElement(725,725,535,555,2,'black');
   var trampoline1Leg3Ele = createLineElement(760,760,525,545,2,'black');
-  var trampoline1Ele = createElipseElement(725,525,40,10,'#4C4E4B',1,'blue');
+  var trampoline1Ele = createEllipseElement(725,525,40,10,'#4C4E4B',1,'blue');
   var trampoline2Leg1Ele = createLineElement(520,520,525,545,2,'black');
   var trampoline2Leg2Ele = createLineElement(555,555,535,555,2,'black');
   var trampoline2Leg3Ele = createLineElement(590,590,525,545,2,'black');
-  var trampoline2Ele = createElipseElement(555,525,40,10,'#4C4E4B',1,'blue');
+  var trampoline2Ele = createEllipseElement(555,525,40,10,'#4C4E4B',1,'blue');
   var trampoline3Leg1Ele = createLineElement(350,350,525,545,2,'black');
   var trampoline3Leg2Ele = createLineElement(385,385,535,555,2,'black');
   var trampoline3Leg3Ele = createLineElement(420,420,525,545,2,'black');
-  var trampoline3Ele = createElipseElement(385,525,40,10,'#4C4E4B',1,'blue');
+  var trampoline3Ele = createEllipseElement(385,525,40,10,'#4C4E4B',1,'blue');
   // Begin of Weapon Weapon Weapon ///////////
   
   function fireBall(){
@@ -536,10 +562,10 @@ var startGame = function(){
   var smallBallObjArr = [];
   function buildSmallBalls(){
     for(var i=0;i<25;i++){
-      smallBallEleArr[i] = createElipseElement(816,500,3,3,'white');
+      smallBallEleArr[i] = createEllipseElement(816,500,3,3,'white');
     }
     for(var i=0;i<25;i++){
-      smallBallObjArr[i] = createElipseObj(smallBallEleArr[i]);
+      smallBallObjArr[i] = createEllipseObj(smallBallEleArr[i]);
     }
   }
 
@@ -589,8 +615,8 @@ var startGame = function(){
   var pipe2 = createRectElement(35,85,100,441.5,1,'#92BCC8',5);
   var triggerColor2  = createRectElement(150,55,45,496,1,'#284F23',10);
   var heroStep = createRectElement(55,67.5,45.5,461.5,1,'#284F23',0);
-  var red  = createElipseElement(125,525,55,17.5,'red',1,'white');
-  var capOfGun = createElipseElement(238,460,12,18,'white',0.25,'black');
+  var red  = createEllipseElement(125,525,55,17.5,'red',1,'white');
+  var capOfGun = createEllipseElement(238,460,12,18,'white',0.25,'black');
   var fire = createTextElement(102,532,19,'center',1,'white','Push','Open Sans');
   trigger();
   
@@ -614,20 +640,20 @@ var startGame = function(){
   hero.torso1Ele = createLineElement(47,101,427.5,427.5,18,'#BD2C06');
   hero.torso2Ele = createLineElement(56,92,447.5,447.5,30,'#BD2C06');
   hero.headEle = createBallElement(75,410,25,'#FFE1CE');
-  hero.leftEyeEle = createElipseElement(68,407,8,10,'white');
-  hero.rightEyeEle = createElipseElement(82,407,8,10,'white');
-  hero.leftEyeColorEle = createElipseElement(70,407,1.5,1.5,'#1E181A');
-  hero.rightEyeColorEle = createElipseElement(85,407,1.5,1.5,'#1E181A');
-  hero.mouthEle = createElipseElement(75,422,4,4,'#1E181A');
+  hero.leftEyeEle = createEllipseElement(68,407,8,10,'white');
+  hero.rightEyeEle = createEllipseElement(82,407,8,10,'white');
+  hero.leftEyeColorEle = createEllipseElement(70,407,1.5,1.5,'#1E181A');
+  hero.rightEyeColorEle = createEllipseElement(85,407,1.5,1.5,'#1E181A');
+  hero.mouthEle = createEllipseElement(75,422,4,4,'#1E181A');
   hero.hair1Ele = createLineElement(55,50,388,418,7,'#D1A967');
   hero.hair2Ele = createLineElement(55,100,388,384,12,'#D1A967');
 
   var heroHeadObj = createBallObj(hero.headEle);
-  var heroLeftEyeObj = createElipseObj(hero.leftEyeEle);
-  var heroRightEyeObj = createElipseObj(hero.rightEyeEle);
-  var heroLeftEyeColorObj = createElipseObj(hero.leftEyeColorEle);
-  var heroRightEyeColorObj = createElipseObj(hero.rightEyeColorEle);
-  var heroMouthObj = createElipseObj(hero.mouthEle)
+  var heroLeftEyeObj = createEllipseObj(hero.leftEyeEle);
+  var heroRightEyeObj = createEllipseObj(hero.rightEyeEle);
+  var heroLeftEyeColorObj = createEllipseObj(hero.leftEyeColorEle);
+  var heroRightEyeColorObj = createEllipseObj(hero.rightEyeColorEle);
+  var heroMouthObj = createEllipseObj(hero.mouthEle)
   var heroTorso1Obj = createLineObject(hero.torso1Ele);
   var heroTorso2Obj = createLineObject(hero.torso2Ele);
   var heroHair1Obj = createLineObject(hero.hair1Ele);
@@ -646,22 +672,22 @@ var startGame = function(){
     badGuy1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
     badGuy1.torso2Ele = createLineElement(710,744,120,120.5,30,'#DE5D25');
     badGuy1.headEle = createBallElement(727.5,80,27,'#FFE1CE');
-    badGuy1.leftEyeEle = createElipseElement(721,78,8,10,'white');
-    badGuy1.rightEyeEle = createElipseElement(734,78,8,10,'white');
-    badGuy1.leftEyeColorEle = createElipseElement(717,78,1.5,1.5,'red');
-    badGuy1.rightEyeColorEle = createElipseElement(731,78,1.5,1.5,'red');
+    badGuy1.leftEyeEle = createEllipseElement(721,78,8,10,'white');
+    badGuy1.rightEyeEle = createEllipseElement(734,78,8,10,'white');
+    badGuy1.leftEyeColorEle = createEllipseElement(717,78,1.5,1.5,'red');
+    badGuy1.rightEyeColorEle = createEllipseElement(731,78,1.5,1.5,'red');
     badGuy1.hair1Ele = createLineElement(705,700,65,95,7,'#F1EFBE');
     badGuy1.hair2Ele = createLineElement(705,745,60,56,12,'#F1EFBE');
     badGuy1.hair3Ele = createLineElement(750,755,62,92,7,'#F1EFBE');
-    badGuy1.mouthEle = createElipseElement(728,96,4,4,'#1E181A');
+    badGuy1.mouthEle = createEllipseElement(728,96,4,4,'#1E181A');
     badGuy1.rightEyeBrowEle = createLineElement(714,725,61,68,1.5,'black');
     badGuy1.leftEyeBrowEle = createLineElement(727,738,68,57,1.5,'black');
     badGuy1Objects.badGuy1HeadObj = createBallObj(badGuy1.headEle);
-    badGuy1Objects.badGuy1LeftEyeObj = createElipseObj(badGuy1.leftEyeEle);
-    badGuy1Objects.badGuy1RightEyeObj = createElipseObj(badGuy1.rightEyeEle);
-    badGuy1Objects.badGuy1LeftEyeColorObj = createElipseObj(badGuy1.leftEyeColorEle);
-    badGuy1Objects.badGuy1RightEyeColorObj = createElipseObj(badGuy1.rightEyeColorEle);
-    badGuy1Objects.badGuy1MouthObj = createElipseObj(badGuy1.mouthEle);
+    badGuy1Objects.badGuy1LeftEyeObj = createEllipseObj(badGuy1.leftEyeEle);
+    badGuy1Objects.badGuy1RightEyeObj = createEllipseObj(badGuy1.rightEyeEle);
+    badGuy1Objects.badGuy1LeftEyeColorObj = createEllipseObj(badGuy1.leftEyeColorEle);
+    badGuy1Objects.badGuy1RightEyeColorObj = createEllipseObj(badGuy1.rightEyeColorEle);
+    badGuy1Objects.badGuy1MouthObj = createEllipseObj(badGuy1.mouthEle);
     badGuy1Objects.badGuy1Torso1Obj = createLineObject(badGuy1.torso1Ele);
     badGuy1Objects.badGuy1Torso2Obj = createLineObject(badGuy1.torso2Ele);
     badGuy1Objects.badGuy1Hair1Obj = createLineObject(badGuy1.hair1Ele);
@@ -821,8 +847,8 @@ var startGame = function(){
       
    }
    badGuys.create = 'hi';
-  var clearStartButton = document.getElementById('clearStartElipse');
-  var startButton = document.getElementById('startElipse');
+  var clearStartButton = document.getElementById('clearStartEllipse');
+  var startButton = document.getElementById('startEllipse');
   var startText = document.getElementById('start');
   clearStartButton.onclick = function(){
     badGuys.create = 'one';
@@ -832,7 +858,10 @@ var startGame = function(){
   };
   
   var animate = function(){
-
+    if(heroStuff.status === 'dead'){
+      setTimeout(heroInjuredText,8000);
+      heroStuff.status = 'gone';
+    }
     if(heroStuff.status === 'inTrouble'){
       for(var i=0,len=heroRoundObjects.length;i<len;i++){
         heroRoundObjects[i].cx += heroRoundObjects[i].dx;
