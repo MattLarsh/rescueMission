@@ -4,7 +4,7 @@ var startGame = function(){
                                   window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
       window.requestAnimationFrame = requestAnimationFrame;
   })();
-
+  
   var svgNS = "http://www.w3.org/2000/svg";
   var structure = {};
   var weapon = {};
@@ -171,7 +171,7 @@ var startGame = function(){
     document.getElementById("field").appendChild(newElipse);
     return newElipse;
   }
-  function createTextElement(x,y,fontSize,textAnchor,opacity,color,text) {
+  function createTextElement(x,y,fontSize,textAnchor,opacity,color,text,fontFamily) {
     var newText = document.createElementNS(svgNS,"text");
     newText.setAttributeNS(null,"x",x);    
     newText.setAttributeNS(null,"y",y);  
@@ -179,6 +179,7 @@ var startGame = function(){
     newText.setAttributeNS(null,"text-anchor",textAnchor);
     newText.setAttributeNS(null,"fill-opacity",opacity);    
     newText.setAttributeNS(null,"fill",color);
+    newText.setAttributeNS(null,"font-family",fontFamily);
     var textNode = document.createTextNode(text);
     newText.appendChild(textNode);
     document.getElementById("field").appendChild(newText);
@@ -590,7 +591,7 @@ var startGame = function(){
   var heroStep = createRectElement(55,67.5,45.5,461.5,1,'#284F23',0);
   var red  = createElipseElement(125,525,55,17.5,'red',1,'white');
   var capOfGun = createElipseElement(238,460,12,18,'white',0.25,'black');
-  var fire = createTextElement(100,532,25,'center',1,'white','Push');
+  var fire = createTextElement(102,532,19,'center',1,'white','Push','Open Sans');
   trigger();
   
   var ball1 = createBallElement(240,460,12.5,'white');
@@ -819,8 +820,17 @@ var startGame = function(){
     
       
    }
- 
-  badGuys.create = 'hi';
+   badGuys.create = 'hi';
+  var clearStartButton = document.getElementById('clearStartElipse');
+  var startButton = document.getElementById('startElipse');
+  var startText = document.getElementById('start');
+  clearStartButton.onclick = function(){
+    badGuys.create = 'one';
+    startButton.remove();
+    startText.remove();
+    clearStartButton.remove();
+  };
+  
   var animate = function(){
 
     if(heroStuff.status === 'inTrouble'){
