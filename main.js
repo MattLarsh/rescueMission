@@ -531,22 +531,21 @@ var startGame = function(){
     ballObjects[weapon.whichBall].dx = 10;
     
   }
-  var smallBallArr = [];
-  var ballObjArr = [];
+  var smallBallEleArr = [];
+  var smallBallObjArr = [];
   function buildSmallBalls(){
     for(var i=0;i<25;i++){
-      smallBallArr[i] = createElipseElement(816,500,3,3,'white');
+      smallBallEleArr[i] = createElipseElement(816,500,3,3,'white');
     }
-    
     for(var i=0;i<25;i++){
-      ballObjArr[i] = createElipseObj(smallBallArr[i]);
+      smallBallObjArr[i] = createElipseObj(smallBallEleArr[i]);
     }
   }
 
   function ballExplode(){
     var x;
     var y;
-    for(var i=0,len=ballObjArr.length;i<len;i++){
+    for(var i=0;i<25;i++){
       if(Math.random() > 0.5){
         x = 20;
       }
@@ -559,22 +558,22 @@ var startGame = function(){
       else{
         y = -20;
       }
-      ballObjArr[i].dx = x * Math.random();
-      ballObjArr[i].dy = y * Math.random();
+      smallBallObjArr[i].dx = x * Math.random();
+      smallBallObjArr[i].dy = y * Math.random();
     }
   }
   function removeBall(){
-    ballEleArr[weapon.whichBall].remove();
+    ballEleArr[0].remove();
+    ballEleArr.shift();
+    
   }
   function removeSmallBalls(){
-    for(var i=0;i<smallBallArr.length;i++){
-      smallBallArr[i].remove();
+    for(var i=0;i<smallBallEleArr.length;i++){
+      smallBallEleArr[i].remove();
     }
   }
   
-  var pipe = createRectElement(150,35,100,441.5,1,'#92BCC8',14);
-  var pipe2 = createRectElement(35,85,100,441.5,1,'#92BCC8',5);
-  var capOfGun = createElipseElement(238,460,12,18,'white',0.25,'black');
+ 
   
   function trigger(){
     var clearTrigger  = createRectElement(150,55,45,496,0,'#284F23',10);
@@ -582,10 +581,18 @@ var startGame = function(){
       fireBall();
     }
   }
-  var triggerColor  = createRectElement(150,55,45,496,1,'#284F23',10);
-  var fire = createTextElement(100,530,25,'center',1,'white','FIRE!');
-  trigger();
+  // createRectElement(width,height,x,y,opacity,fill,rx)
+  // createBallElement(cx,cy,r,color)
+  
+  var pipe = createRectElement(150,35,100,441.5,1,'#92BCC8',14);
+  var pipe2 = createRectElement(35,85,100,441.5,1,'#92BCC8',5);
+  var triggerColor2  = createRectElement(150,55,45,496,1,'#284F23',10);
   var heroStep = createRectElement(55,67.5,45.5,461.5,1,'#284F23',0);
+  var red  = createElipseElement(125,525,55,17.5,'red',1,'white');
+  var capOfGun = createElipseElement(238,460,12,18,'white',0.25,'black');
+  var fire = createTextElement(100,532,25,'center',1,'white','Push');
+  trigger();
+  
   var ball1 = createBallElement(240,460,12.5,'white');
   var ball2 = createBallElement(212.5,460,12.5,'white');
   var ball3 = createBallElement(185.5,460,12.5,'white');
@@ -595,6 +602,7 @@ var startGame = function(){
   var ball3Obj = createBallObj(ball3);
   var ballObjects = [ball1Obj,ball2Obj,ball3Obj];
   var ballEleArr = [ball1,ball2,ball3];
+  
   // End of Weapon Weapon Weapon 
   // HERO 
   var hero = {};
@@ -627,10 +635,7 @@ var startGame = function(){
   var heroRoundObjects = [heroMouthObj,heroLeftEyeColorObj,heroRightEyeColorObj,heroHeadObj,heroLeftEyeObj,heroRightEyeObj];
 
   var heroLineObjects = [heroHair2Obj,heroHair1Obj,heroTorso2Obj,heroTorso1Obj];
-  explode(heroRoundObjects,heroLineObjects,hero);
-  createBlood(heroStuff.bloodEleArr,heroStuff.bloodObjArr,70,427);
-  heroStuff.status = 'inTrouble';
-  bloodExplosion(heroStuff.bloodObjArr);
+  
   // // End HERO 
   // Begin BadGuy Number 1 
   var badGuys = {};
@@ -667,7 +672,9 @@ var startGame = function(){
     badGuy1Objects.badGuy1LeftEyeBrowObj = createLineObject(badGuy1.rightEyeBrowEle);
     badGuys.create = 'one';
   }
+  
   createBadGuy1()
+
   function explode(roundObjects,lineObjects,person){
     var x;
     for(var i=0,len=roundObjects.length;i<len;i++){
@@ -717,6 +724,7 @@ var startGame = function(){
       move1.badDir = 'up'
       move1.jump++;
     }
+
     if(move1.jump === 2){
       move1.xSpeed = -6;
     }
@@ -726,12 +734,30 @@ var startGame = function(){
     if(move1.jump === 4){
       move1.xSpeed = -6;
     }
-    // if(move1.jump === 6){
-    //   badGuys.create = 'none';
-    //   resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects)
-    //   return;
-    // }
     if(badGuy1RoundObjects[0].cx < 390){
+      move1.xSpeed = 0;
+    }
+    if(move1.jump === 6 && badGuy1RoundObjects[0].cx < 75){
+      move1.xSpeed = -8;
+      if(badGuy1RoundObjects[0].cy > 397){
+        badGuys.create = 'won';
+        setTimeout(moveBadGuy1Eyes,1000);
+        resetBadGuy(badGuy1LineObjects,badGuy1RoundObjects);
+        explode(heroRoundObjects,heroLineObjects,hero);
+        createBlood(heroStuff.bloodEleArr,heroStuff.bloodObjArr,70,427);
+        heroStuff.status = 'inTrouble';
+        bloodExplosion(heroStuff.bloodObjArr);
+        setTimeout(fireBall,1600);
+        setTimeout(fireBall,2800);
+        setTimeout(fireBall,4100);
+        return;
+      }
+    }
+    if(move1.jump === 6){
+      move1.xSpeed = -8;
+      
+    }
+    if(badGuy1RoundObjects[0].cx < 75){
       move1.xSpeed = 0;
     }
     if(badGuy1RoundObjects[0].cy > 120 ){
@@ -739,6 +765,9 @@ var startGame = function(){
     }
     if(badGuy1RoundObjects[0].cy > 400 ){
       move1.ySpeed -= 0.25;
+    }
+    if(move1.jump === 7){
+      
     }
     if(badGuy1RoundObjects[0].cy < 170 && move1.badDir === 'up'){
       move1.ySpeed *= -1;
@@ -756,7 +785,10 @@ var startGame = function(){
       badGuy1LineObjects[i].dx2 = move1.xSpeed;
     }
   }
-
+  function moveBadGuy1Eyes(){
+    badGuy1Objects.badGuy1LeftEyeColorObj.cx += 7;
+    badGuy1Objects.badGuy1RightEyeColorObj.cx += 7;
+  }
 
 
   
@@ -768,7 +800,7 @@ var startGame = function(){
 
   var viewWidth = view.width;
   var viewHeight = view.height;
-
+  
   
   function collideBallWith(ball,head,func) {
     if(ball.bottom > head.top && ball.top < head.bottom &&
@@ -779,6 +811,7 @@ var startGame = function(){
         badGuys.create = 'oneDead';
         ballObjects.splice(weapon.whichBall,1);
         removeBall();
+        
       }
       
     } 
@@ -787,10 +820,10 @@ var startGame = function(){
       
    }
  
-  
+  badGuys.create = 'hi';
   var animate = function(){
+
     if(heroStuff.status === 'inTrouble'){
-      console.log('hi');
       for(var i=0,len=heroRoundObjects.length;i<len;i++){
         heroRoundObjects[i].cx += heroRoundObjects[i].dx;
         heroRoundObjects[i].cy += heroRoundObjects[i].dy;
@@ -835,33 +868,35 @@ var startGame = function(){
       heroStuff.bloodObjArr[i].cy += heroStuff.bloodObjArr[i].dy;
     }
     
-    for(var i=0,len=ballObjArr.length;i<len;i++){
-      ballObjArr[i].cx += ballObjArr[i].dx;
-      ballObjArr[i].cy += ballObjArr[i].dy;
+    for(var i=0;i<smallBallObjArr.length;i++){
+      smallBallObjArr[i].cx += smallBallObjArr[i].dx;
+      smallBallObjArr[i].cy += smallBallObjArr[i].dy;
     }
+    
     for(var i=0,len=boardObjectsArr.length;i<len;i++){
       boardObjectsArr[i].x1 += boardObjectsArr[i].dx1;
       boardObjectsArr[i].x2 += boardObjectsArr[i].dx2;
       boardObjectsArr[i].y1 += boardObjectsArr[i].dy1;
       boardObjectsArr[i].y2 += boardObjectsArr[i].dy2;
     }
+
     for(var i=0,len=ballObjects.length;i<len;i++){
       ballObjects[i].cx += ballObjects[i].dx;
 
     }
-    if(ballObjects[weapon.whichBall] != undefined ){
-      if(ballObjects[weapon.whichBall].cx > 820){
+    if(ballObjects[0] != undefined ){
+      if(ballObjects[0].cx > 820){
         structure.hit++;
         buildSmallBalls();
         removeBall();
-        weapon.whichBall++;
         ballExplode();
+        ballObjects.splice(0,1);
         setTimeout(removeSmallBalls,500);
       }
     }
-  
+    
     if(structure.hit === 1){
-      if(boardObjectsArr[weapon.whichBall -1].x1 < 840){
+      if(boardObjectsArr[0].x1 < 840){
         structureHit1();
       }
       else{
