@@ -191,6 +191,7 @@ var startGame = function(){
   //Start blood
   var bloodEleArr = [];
   var bloodObjArr = [];
+
   function createBlood(eleArr,objArr,x,y){
     for(var i=0;i<200;i++){
       eleArr[i] = createEllipseElement(x,y,5,5,'red');
@@ -282,12 +283,9 @@ var startGame = function(){
     for(var key in hostage){
       hostage[key].remove();
     }
-    
     for(var i=0,len=bloodEleArr.length;i<len;i++){
-
       bloodEleArr[i].remove();
     }
-    
   }
   
   
@@ -673,6 +671,9 @@ var startGame = function(){
   // Begin BadGuy Number 1 
   var badGuys = {};
   var bG1 = {};
+ 
+  badGuys.bloodEleArr = [];
+  badGuys.bloodObjArr = [];
   var bG1Objects = {};
   function createbG1(){
     bG1.torso1Ele = createLineElement(700,754,100,100,18,'#DE5D25');
@@ -705,11 +706,14 @@ var startGame = function(){
     bG1Objects.bG1LeftEyeBrowObj = createLineObject(bG1.rightEyeBrowEle);
     badGuys.status = 'one';
   }
-  
   createbG1()
-
+  // console.log(bG1Objects.bG1HeadObj.cx);
+  
   var bG2 = {};
   var bG2Objects = {};
+  var bG2Stuff = {};
+  bG2Stuff.bloodEleArr = [];
+  bG2Stuff.bloodObjArr = [];
   function createbG2(){
     bG2.torso1Ele = createLineElement(700,754,100,100,18,'#3B016A');
     bG2.torso2Ele = createLineElement(710,744,120,120.5,30,'#3B016A');
@@ -767,18 +771,20 @@ var startGame = function(){
       lineObjects[i].dx1 = x;
       lineObjects[i].dx2 = x;
     }
-    setTimeout(remove,2500,person);
+    setTimeout(remove,2500,person,badGuys.bloodEleArr,badGuys.bloodObjArr);
 
   }
   
 
-  function remove(person){
+  function remove(person,eleArr,objArr){
     for(var key in person){
       person[key].remove();
     }
-    for(var i=0;i<heroStuff.bloodEleArr.length;i++){
-      heroStuff.bloodEleArr[i].remove();
+    
+    for(var i=0,len=eleArr.length;i<len;i++){
+      eleArr[i].remove();
     }
+    badGuys.bloodObjArr = [];
     if(badGuys.status === 'oneDead'){
       createbG2();
     }
@@ -814,10 +820,12 @@ var startGame = function(){
         badGuys.status = 'won';
         setTimeout(movebG1Eyes,1000);
         resetBadGuy(bG1LineObjects,bG1RoundObjects);
+        
+        createBlood(badGuys.bloodEleArr,badGuys.bloodObjArr,70,427);
+        bloodExplosion(badGuys.bloodObjArr);
         explode(heroRoundObjects,heroLineObjects,hero);
-        createBlood(heroStuff.bloodEleArr,heroStuff.bloodObjArr,70,427);
         heroStuff.status = 'inTrouble';
-        bloodExplosion(heroStuff.bloodObjArr);
+        
         setTimeout(fireBall,1600);
         setTimeout(fireBall,2800);
         setTimeout(fireBall,4100);
@@ -886,10 +894,10 @@ var startGame = function(){
         badGuys.status = 'won';
         setTimeout(movebG2Eyes,1000);
         resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
+        createBlood(badGuys.bloodEleArr,badGuys.bloodObjArr,70,427);
+        bloodExplosion(badGuys.bloodObjArr);
         explode(heroRoundObjects,heroLineObjects,hero);
-        createBlood(heroStuff.bloodEleArr,heroStuff.bloodObjArr,70,427);
         heroStuff.status = 'inTrouble';
-        bloodExplosion(heroStuff.bloodObjArr);
         setTimeout(fireBall,1600);
         setTimeout(fireBall,2800);
         setTimeout(fireBall,4100);
@@ -951,20 +959,26 @@ var startGame = function(){
   var viewWidth = view.width;
   var viewHeight = view.height;
   
-  
   function collideBallWith(ball,head,func) {
     if(ball.bottom != undefined){
       if(ball.bottom > head.top && ball.top < head.bottom &&
          ball.right > head.left && ball.left < head.right) {
         if(badGuys.status === 'one'){
           resetBadGuy(bG1LineObjects,bG1RoundObjects);
+          createBlood(badGuys.bloodEleArr,badGuys.bloodObjArr,bG1Objects.bG1HeadObj.cx,bG1Objects.bG1HeadObj.cy);
+          bloodExplosion(badGuys.bloodObjArr);
           explode(bG1RoundObjects,bG1LineObjects,bG1);
           badGuys.status = 'oneDead';
           ballObjects.splice(weapon.whichBall,1);
           removeBall();
         }
+       
+
+
         if(badGuys.status === 'two'){
           resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
+          createBlood(badGuys.bloodEleArr,badGuys.bloodObjArr,bG2Objects.HeadObj.cx,bG2Objects.HeadObj.cy);
+          bloodExplosion(badGuys.bloodObjArr);
           explode(bG2Objects.roundArr,bG2Objects.lineArr,bG2);
           badGuys.status = 'twoAlmostDead';
           ballObjects.splice(weapon.whichBall,1);
@@ -1058,16 +1072,15 @@ var startGame = function(){
       hostageLineObjects[i].y1 += hostageLineObjects[i].dy1;
       hostageLineObjects[i].y2 += hostageLineObjects[i].dy2;
     }
-   
     for(var i=0,len=bloodObjArr.length;i<len;i++){
       bloodObjArr[i].cx += bloodObjArr[i].dx;
       bloodObjArr[i].cy += bloodObjArr[i].dy;
     }
-    for(var i=0,len=heroStuff.bloodObjArr.length;i<len;i++){
-      heroStuff.bloodObjArr[i].cx += heroStuff.bloodObjArr[i].dx;
-      heroStuff.bloodObjArr[i].cy += heroStuff.bloodObjArr[i].dy;
+    for(var i=0,len=badGuys.bloodObjArr.length;i<len;i++){
+      badGuys.bloodObjArr[i].cx += badGuys.bloodObjArr[i].dx;
+      badGuys.bloodObjArr[i].cy += badGuys.bloodObjArr[i].dy;
     }
-    
+
     for(var i=0;i<smallBallObjArr.length;i++){
       smallBallObjArr[i].cx += smallBallObjArr[i].dx;
       smallBallObjArr[i].cy += smallBallObjArr[i].dy;
@@ -1115,7 +1128,6 @@ var startGame = function(){
     if(structure.hit === 'top1'){
       structureHitTop1();
     }
-    
     if(structure.hit === 2.1){
       if(boardObjectsArr[0].x1 < 940){
         structureHit2();
@@ -1140,8 +1152,6 @@ var startGame = function(){
     if(structure.hit === 'pricessFalling'){
       princessFalling();
     }
-    
-    
     requestAnimationFrame(animate);
   };
 
