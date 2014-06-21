@@ -866,7 +866,7 @@ var startGame = function(){
   }
   var move2 = {};
   move2.badDir = 'down';
-  move2.ySpeed = 4;
+  move2.ySpeed = 3;
   move2.xSpeed = 0;
   move2.jump = 0;
   function bG2Movement(){
@@ -875,22 +875,18 @@ var startGame = function(){
       move2.badDir = 'up'
       move2.jump++;
     }
-
     if(move2.jump === 2){
       move2.xSpeed = -6;
     }
-    if(bG2Objects.roundArr[0].cx < 560){
+    if(bG2Objects.roundArr[0].cx < 560 && move2.jump === 2){
       move2.xSpeed = 0;
     }
     if(move2.jump === 4){
-      move2.xSpeed = -6;
+      move2.xSpeed = -5;
     }
-    if(bG2Objects.roundArr[0].cx < 390){
-      move2.xSpeed = 0;
-    }
-    if(move2.jump === 6 && bG2Objects.roundArr[0].cx < 75){
-      move2.xSpeed = -8;
-      if(bG2Objects.roundArr[0].cy > 397){
+    if(move2.jump === 4 && bG2Objects.roundArr[0].cx < 75){
+      move2.xSpeed = -1;
+      if(bG2Objects.roundArr[0].cy > 402){
         badGuys.status = 'won';
         setTimeout(movebG2Eyes,1000);
         resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
@@ -904,23 +900,14 @@ var startGame = function(){
         return;
       }
     }
-    if(move2.jump === 6){
-      move2.xSpeed = -8;
-      
-    }
-    if(bG2Objects.roundArr[0].cx < 75){
-      move2.xSpeed = 0;
-    }
-    if(bG2Objects.roundArr[0].cy > 120 ){
+    if(bG2Objects.roundArr[0].cy > 140 ){
       move2.ySpeed += 0.25;
     }
     if(bG2Objects.roundArr[0].cy > 400 ){
       move2.ySpeed -= 0.25;
     }
-    if(move2.jump === 7){
-      
-    }
-    if(bG2Objects.roundArr[0].cy < 170 && move2.badDir === 'up'){
+    
+    if(bG2Objects.roundArr[0].cy < 80 && move2.badDir === 'up'){
       move2.ySpeed *= -1;
       move2.ySpeed += 0.25;
       move2.badDir = 'down'
