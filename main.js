@@ -496,6 +496,7 @@ var startGame = function(){
     clearTryAgainEllipse.onclick = function(){
       window.location.reload();
     };
+    hostageStuff.status = 'gone';
   }
  
   // <ellipse id='startEllipse' cx='550' cy='240' fill='red' rx='50' ry='25' stroke='white'/>
@@ -1048,15 +1049,21 @@ var startGame = function(){
           ballObjects.splice(weapon.whichBall,1);
           removeBall();
         }
-       
-
-
         if(badGuys.status === 'two'){
           resetBadGuy(bG2Objects.lineArr,bG2Objects.roundArr);
           createBlood(badGuys.bloodEleArr,badGuys.bloodObjArr,bG2Objects.HeadObj.cx,bG2Objects.HeadObj.cy);
           bloodExplosion(badGuys.bloodObjArr);
           explode(bG2Objects.roundArr,bG2Objects.lineArr,bG2);
-          badGuys.status = 'twoAlmostDead';
+          badGuys.status = 'twoDead';
+          ballObjects.splice(weapon.whichBall,1);
+          removeBall();
+        }
+        if(badGuys.status === 'three'){
+          resetBadGuy(bG3Objects.lineArr,bG3Objects.roundArr);
+          createBlood(badGuys.bloodEleArr,badGuys.bloodObjArr,bG3Objects.HeadObj.cx,bG3Objects.HeadObj.cy);
+          bloodExplosion(badGuys.bloodObjArr);
+          explode(bG3Objects.roundArr,bG3Objects.lineArr,bG3);
+          badGuys.status = 'threeAlmostDead';
           ballObjects.splice(weapon.whichBall,1);
           removeBall();
         }
@@ -1084,10 +1091,10 @@ var startGame = function(){
   
   var animate = function(){
     if(hostageStuff.status != 'gone'){
-      if(badGuys.status === 'twoAlmostDead'){
+      if(badGuys.status === 'threeAlmostDead'){
         setTimeout(savedPrincessText,2500);
         setTimeout(again,2500,'Save Again');
-        badGuys.status = 'twoDead';
+        badGuys.status = 'threeDead';
       }
       if(heroStuff.status === 'inTrouble'){
         for(var i=0,len=heroRoundObjects.length;i<len;i++){
