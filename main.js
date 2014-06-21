@@ -483,11 +483,6 @@ var startGame = function(){
     var princessInjured = createTextElement(330,280,25,'center',1,'red','The Princess has been fatally injured!','Open Sans');
     hostageStuff.status = 'gone';
   }
-  function heroInjuredText(){
-    if(hostageStuff.status === undefined){
-      var heroInjured = createTextElement(330,250,25,'center',1,'red','Our Hero has been fatally injured!','Open Sans');
-    }
-  }
   
   function savedPrincessText(){
     var princessSaved = createTextElement(405,280,25,'center',1,'red','You Saved the Princess!','Open Sans');
@@ -746,6 +741,42 @@ var startGame = function(){
     badGuys.status = 'two';
   }
 
+  var bG3 = {};
+  var bG3Objects = {};
+  var bG3Stuff = {};
+  bG3Stuff.bloodEleArr = [];
+  bG3Stuff.bloodObjArr = [];
+  function createbG3(){
+    bG3.torso1Ele = createLineElement(1000,1054,100,100,18,'black');
+    bG3.torso2Ele = createLineElement(1010,1044,120,120.5,30,'black');
+    bG3.headEle = createBallElement(1027.5,82,27,'#FFE1CE');
+    bG3.leftEyeEle = createEllipseElement(1021,78,8,10,'white');
+    bG3.rightEyeEle = createEllipseElement(1034,78,9,11,'white');
+    bG3.leftEyeColorEle = createEllipseElement(1017,78,2,2,'red');
+    bG3.rightEyeColorEle = createEllipseElement(1031,78,2,2,'red');
+    bG3.hair1Ele = createLineElement(1005,1000,65,95,7,'red');
+    bG3.hair2Ele = createLineElement(1005,1047,60,56,12,'red');
+    bG3.hair3Ele = createLineElement(1050,1055,60,92,7,'red');
+    bG3.mouthEle = createEllipseElement(1024,96,4,4,'#1E181A');
+    bG3.rightEyeBrowEle = createLineElement(1014,1025,64,71,1.5,'black');
+    bG3.leftEyeBrowEle = createLineElement(1027,1038,71,60,1.5,'black');
+    bG3Objects.HeadObj = createBallObj(bG3.headEle);
+    bG3Objects.LeftEyeObj = createEllipseObj(bG3.leftEyeEle);
+    bG3Objects.RightEyeObj = createEllipseObj(bG3.rightEyeEle);
+    bG3Objects.LeftEyeColorObj = createEllipseObj(bG3.leftEyeColorEle);
+    bG3Objects.RightEyeColorObj = createEllipseObj(bG3.rightEyeColorEle);
+    bG3Objects.MouthObj = createEllipseObj(bG3.mouthEle);
+    bG3Objects.Torso1Obj = createLineObject(bG3.torso1Ele);
+    bG3Objects.Torso2Obj = createLineObject(bG3.torso2Ele);
+    bG3Objects.Hair2Obj = createLineObject(bG3.hair2Ele);
+    bG3Objects.Hair1Obj = createLineObject(bG3.hair1Ele);
+    bG3Objects.Hair3Obj = createLineObject(bG3.hair3Ele);
+    bG3Objects.RightEyeBrowObj = createLineObject(bG3.leftEyeBrowEle);
+    bG3Objects.LeftEyeBrowObj = createLineObject(bG3.rightEyeBrowEle);
+    bG3Objects.lineArr = [bG3Objects.LeftEyeBrowObj,bG3Objects.RightEyeBrowObj,bG3Objects.Hair3Obj,bG3Objects.Torso1Obj,bG3Objects.Torso2Obj,bG3Objects.Hair2Obj,bG3Objects.Hair1Obj];
+    bG3Objects.roundArr = [bG3Objects.HeadObj,bG3Objects.LeftEyeObj,bG3Objects.RightEyeObj,bG3Objects.LeftEyeColorObj,bG3Objects.RightEyeColorObj,bG3Objects.MouthObj];
+    badGuys.status = 'three';
+  }
   
 
 
@@ -787,6 +818,9 @@ var startGame = function(){
     badGuys.bloodObjArr = [];
     if(badGuys.status === 'oneDead'){
       createbG2();
+    }
+    if(badGuys.status === 'twoDead'){
+      createbG3();
     }
   }
 
@@ -923,6 +957,57 @@ var startGame = function(){
       bG2Objects.lineArr[i].dx2 = move2.xSpeed;
     }
   }
+  var move3 = {};
+  move3.badDir = 'up';
+  move3.ySpeed = -3;
+  move3.xSpeed = 0;
+  move3.jump = 0;
+  function bG3Movement(){
+    if(bG3Objects.roundArr[0].cx > 950 && move3.badDir === 'up' && move3.jump === 0){
+      move3.xSpeed = -6.5;
+    }
+    if(bG3Objects.roundArr[0].cx < 800 && move3.badDir === 'up'&& move3.jump === 0){
+      move3.ySpeed = 15;
+    }
+    
+    if(bG3Objects.roundArr[0].cx < 75){
+      move3.xSpeed = -0.5;
+      if(bG3Objects.roundArr[0].cy > 402){
+        badGuys.status = 'won';
+        setTimeout(movebG3Eyes,1000);
+        resetBadGuy(bG3Objects.lineArr,bG3Objects.roundArr);
+        createBlood(badGuys.bloodEleArr,badGuys.bloodObjArr,70,427);
+        bloodExplosion(badGuys.bloodObjArr);
+        explode(heroRoundObjects,heroLineObjects,hero);
+        heroStuff.status = 'inTrouble';
+        setTimeout(fireBall,1600);
+        setTimeout(fireBall,2800);
+        setTimeout(fireBall,4100);
+        return;
+      }
+    }
+    
+    if(bG3Objects.roundArr[0].cy > 480 && move3.badDir === 'up'){
+      move3.ySpeed *= -1;
+      move3.badDir = 'down';
+      // explode trampoline here!
+      move3.jump++
+    }
+    if(move3.jump === 1 && bG3Objects.roundArr[0].cx < 270){
+      move3.ySpeed *= -1;
+      move3.jump++;
+    }
+    for(var i=0,len=bG3Objects.roundArr.length;i<len;i++){
+      bG3Objects.roundArr[i].dy = move3.ySpeed;
+      bG3Objects.roundArr[i].dx = move3.xSpeed;
+    }
+    for(var i=0,len=bG3Objects.lineArr.length;i<len;i++){
+      bG3Objects.lineArr[i].dy1 = move3.ySpeed;
+      bG3Objects.lineArr[i].dy2 = move3.ySpeed;
+      bG3Objects.lineArr[i].dx1 = move3.xSpeed;
+      bG3Objects.lineArr[i].dx2 = move3.xSpeed;
+    }
+  }
   function movebG1Eyes(){
     bG1Objects.bG1LeftEyeColorObj.cx += 7;
     bG1Objects.bG1RightEyeColorObj.cx += 7;
@@ -930,6 +1015,10 @@ var startGame = function(){
   function movebG2Eyes(){
     bG2Objects.LeftEyeColorObj.cx += 7;
     bG2Objects.RightEyeColorObj.cx += 7;
+  }
+  function movebG3Eyes(){
+    bG3Objects.LeftEyeColorObj.cx += 7;
+    bG3Objects.RightEyeColorObj.cx += 7;
   }
 
 
@@ -994,152 +1083,168 @@ var startGame = function(){
   };
   
   var animate = function(){
-    
-    if(badGuys.status === 'twoAlmostDead'){
-      setTimeout(savedPrincessText,2500);
-      setTimeout(again,2500,'Save Again');
-      badGuys.status = 'twoDead';
-    }
-    if(heroStuff.status === 'inTrouble'){
-      for(var i=0,len=heroRoundObjects.length;i<len;i++){
-        heroRoundObjects[i].cx += heroRoundObjects[i].dx;
-        heroRoundObjects[i].cy += heroRoundObjects[i].dy;
+    if(hostageStuff.status != 'gone'){
+      if(badGuys.status === 'twoAlmostDead'){
+        setTimeout(savedPrincessText,2500);
+        setTimeout(again,2500,'Save Again');
+        badGuys.status = 'twoDead';
       }
-      for(var i=0,len=heroLineObjects.length;i<len;i++){
-        heroLineObjects[i].x1 += heroLineObjects[i].dx1;
-        heroLineObjects[i].x2 += heroLineObjects[i].dx2;
-        heroLineObjects[i].y1 += heroLineObjects[i].dy1;
-        heroLineObjects[i].y2 += heroLineObjects[i].dy2;
-      }
-    }
-    
-    if(badGuys.status === 'one' || badGuys.status === 'oneDead'){
-      for(var i=0,len=bG1RoundObjects.length;i<len;i++){
-        bG1RoundObjects[i].cx += bG1RoundObjects[i].dx;
-        bG1RoundObjects[i].cy += bG1RoundObjects[i].dy;
-      }
-      for(var i=0,len=bG1LineObjects.length;i<len;i++){
-        bG1LineObjects[i].x1 += bG1LineObjects[i].dx1;
-        bG1LineObjects[i].x2 += bG1LineObjects[i].dx2;
-        bG1LineObjects[i].y1 += bG1LineObjects[i].dy1;
-        bG1LineObjects[i].y2 += bG1LineObjects[i].dy2;
-      }
-    }
-    
-    if(badGuys.status === 'two' || badGuys.status === 'twoDead'){
-      
-      for(var i=0,len=bG2Objects.roundArr.length;i<len;i++){
-        bG2Objects.roundArr[i].cx += bG2Objects.roundArr[i].dx;
-        bG2Objects.roundArr[i].cy += bG2Objects.roundArr[i].dy;
-      }
-      for(var i=0,len=bG2Objects.lineArr.length;i<len;i++){
-        bG2Objects.lineArr[i].x1 += bG2Objects.lineArr[i].dx1;
-        bG2Objects.lineArr[i].x2 += bG2Objects.lineArr[i].dx2;
-        bG2Objects.lineArr[i].y1 += bG2Objects.lineArr[i].dy1;
-        bG2Objects.lineArr[i].y2 += bG2Objects.lineArr[i].dy2;
-      }
-    }
-    if(badGuys.status === 'one'){
-      bG1Movement();
-      collideBallWith(ballObjects[0],bG1Objects.bG1HeadObj);
-    }
-    
-    if(badGuys.status === 'two'){
-      bG2Movement();
-      collideBallWith(ballObjects[0],bG2Objects.HeadObj);
-    }
-
-    for(var i=0,len=hostageRoundObjects.length;i<len;i++){
-      hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
-      hostageRoundObjects[i].cy += hostageRoundObjects[i].dy;
-    }
-    for(var i=0,len=hostageLineObjects.length;i<len;i++){
-      hostageLineObjects[i].x1 += hostageLineObjects[i].dx1;
-      hostageLineObjects[i].x2 += hostageLineObjects[i].dx2;
-      hostageLineObjects[i].y1 += hostageLineObjects[i].dy1;
-      hostageLineObjects[i].y2 += hostageLineObjects[i].dy2;
-    }
-    for(var i=0,len=bloodObjArr.length;i<len;i++){
-      bloodObjArr[i].cx += bloodObjArr[i].dx;
-      bloodObjArr[i].cy += bloodObjArr[i].dy;
-    }
-    for(var i=0,len=badGuys.bloodObjArr.length;i<len;i++){
-      badGuys.bloodObjArr[i].cx += badGuys.bloodObjArr[i].dx;
-      badGuys.bloodObjArr[i].cy += badGuys.bloodObjArr[i].dy;
-    }
-
-    for(var i=0;i<smallBallObjArr.length;i++){
-      smallBallObjArr[i].cx += smallBallObjArr[i].dx;
-      smallBallObjArr[i].cy += smallBallObjArr[i].dy;
-    }
-    
-    for(var i=0,len=boardObjectsArr.length;i<len;i++){
-      boardObjectsArr[i].x1 += boardObjectsArr[i].dx1;
-      boardObjectsArr[i].x2 += boardObjectsArr[i].dx2;
-      boardObjectsArr[i].y1 += boardObjectsArr[i].dy1;
-      boardObjectsArr[i].y2 += boardObjectsArr[i].dy2;
-    }
-
-    for(var i=0,len=ballObjects.length;i<len;i++){
-      ballObjects[i].cx += ballObjects[i].dx;
-
-    }
-    if(ballObjects[0] != undefined ){
-      if(ballObjects[0].cx > 820){
-        structure.hit++;
-        buildSmallBalls();
-        removeBall();
-        ballExplode();
-        ballObjects.splice(0,1);
-        for(i=0,len=ballObjects.length;i<len;i++){
-          if(i <= 3){
-            ballObjects[i].cx += 30;
-          }
-          if(i == 4){
-            ballObjects[i].cy -= 30
-          }
+      if(heroStuff.status === 'inTrouble'){
+        for(var i=0,len=heroRoundObjects.length;i<len;i++){
+          heroRoundObjects[i].cx += heroRoundObjects[i].dx;
+          heroRoundObjects[i].cy += heroRoundObjects[i].dy;
         }
-        setTimeout(removeSmallBalls,500);
+        for(var i=0,len=heroLineObjects.length;i<len;i++){
+          heroLineObjects[i].x1 += heroLineObjects[i].dx1;
+          heroLineObjects[i].x2 += heroLineObjects[i].dx2;
+          heroLineObjects[i].y1 += heroLineObjects[i].dy1;
+          heroLineObjects[i].y2 += heroLineObjects[i].dy2;
+        }
       }
-    }
-    
-    if(structure.hit === 1){
-      if(boardObjectsArr[0].x1 < 840){
-        structureHit1();
+      
+      if(badGuys.status === 'one' || badGuys.status === 'oneDead'){
+        for(var i=0,len=bG1RoundObjects.length;i<len;i++){
+          bG1RoundObjects[i].cx += bG1RoundObjects[i].dx;
+          bG1RoundObjects[i].cy += bG1RoundObjects[i].dy;
+        }
+        for(var i=0,len=bG1LineObjects.length;i<len;i++){
+          bG1LineObjects[i].x1 += bG1LineObjects[i].dx1;
+          bG1LineObjects[i].x2 += bG1LineObjects[i].dx2;
+          bG1LineObjects[i].y1 += bG1LineObjects[i].dy1;
+          bG1LineObjects[i].y2 += bG1LineObjects[i].dy2;
+        }
       }
-      else{
-        boardReset();
-        structure.hit = 'top1';
+      
+      if(badGuys.status === 'two' || badGuys.status === 'twoDead'){
+        
+        for(var i=0,len=bG2Objects.roundArr.length;i<len;i++){
+          bG2Objects.roundArr[i].cx += bG2Objects.roundArr[i].dx;
+          bG2Objects.roundArr[i].cy += bG2Objects.roundArr[i].dy;
+        }
+        for(var i=0,len=bG2Objects.lineArr.length;i<len;i++){
+          bG2Objects.lineArr[i].x1 += bG2Objects.lineArr[i].dx1;
+          bG2Objects.lineArr[i].x2 += bG2Objects.lineArr[i].dx2;
+          bG2Objects.lineArr[i].y1 += bG2Objects.lineArr[i].dy1;
+          bG2Objects.lineArr[i].y2 += bG2Objects.lineArr[i].dy2;
+        }
       }
-    }
-    if(structure.hit === 'top1'){
-      structureHitTop1();
-    }
-    if(structure.hit === 2.1){
-      if(boardObjectsArr[0].x1 < 940){
-        structureHit2();
+      if(badGuys.status === 'three' || badGuys.status === 'threeDead'){
+        for(var i=0,len=bG3Objects.roundArr.length;i<len;i++){
+          bG3Objects.roundArr[i].cx += bG3Objects.roundArr[i].dx;
+          bG3Objects.roundArr[i].cy += bG3Objects.roundArr[i].dy;
+        }
+        for(var i=0,len=bG3Objects.lineArr.length;i<len;i++){
+          bG3Objects.lineArr[i].x1 += bG3Objects.lineArr[i].dx1;
+          bG3Objects.lineArr[i].x2 += bG3Objects.lineArr[i].dx2;
+          bG3Objects.lineArr[i].y1 += bG3Objects.lineArr[i].dy1;
+          bG3Objects.lineArr[i].y2 += bG3Objects.lineArr[i].dy2;
+        }
       }
-      else{
-        boardReset();
-        structure.hit = 'top2';
+      if(badGuys.status === 'one'){
+        bG1Movement();
+        collideBallWith(ballObjects[0],bG1Objects.bG1HeadObj);
       }
-    }
-    if(structure.hit === 'top2'){
-      structureHitTop2();
-    }
-    if(structure.hit === 3.2){
-      if(boardObjectsArr[2].y1 < 520){
-        structureHit3();
+      
+      if(badGuys.status === 'two'){
+        bG2Movement();
+        collideBallWith(ballObjects[0],bG2Objects.HeadObj);
       }
-      else{
-        boardReset();
-        structure.hit = 'pricessFalling';
+      if(badGuys.status === 'three'){
+        bG3Movement();
+        collideBallWith(ballObjects[0],bG3Objects.HeadObj);
       }
+      for(var i=0,len=hostageRoundObjects.length;i<len;i++){
+        hostageRoundObjects[i].cx += hostageRoundObjects[i].dx;
+        hostageRoundObjects[i].cy += hostageRoundObjects[i].dy;
+      }
+      for(var i=0,len=hostageLineObjects.length;i<len;i++){
+        hostageLineObjects[i].x1 += hostageLineObjects[i].dx1;
+        hostageLineObjects[i].x2 += hostageLineObjects[i].dx2;
+        hostageLineObjects[i].y1 += hostageLineObjects[i].dy1;
+        hostageLineObjects[i].y2 += hostageLineObjects[i].dy2;
+      }
+      for(var i=0,len=bloodObjArr.length;i<len;i++){
+        bloodObjArr[i].cx += bloodObjArr[i].dx;
+        bloodObjArr[i].cy += bloodObjArr[i].dy;
+      }
+      for(var i=0,len=badGuys.bloodObjArr.length;i<len;i++){
+        badGuys.bloodObjArr[i].cx += badGuys.bloodObjArr[i].dx;
+        badGuys.bloodObjArr[i].cy += badGuys.bloodObjArr[i].dy;
+      }
+
+      for(var i=0;i<smallBallObjArr.length;i++){
+        smallBallObjArr[i].cx += smallBallObjArr[i].dx;
+        smallBallObjArr[i].cy += smallBallObjArr[i].dy;
+      }
+      
+      for(var i=0,len=boardObjectsArr.length;i<len;i++){
+        boardObjectsArr[i].x1 += boardObjectsArr[i].dx1;
+        boardObjectsArr[i].x2 += boardObjectsArr[i].dx2;
+        boardObjectsArr[i].y1 += boardObjectsArr[i].dy1;
+        boardObjectsArr[i].y2 += boardObjectsArr[i].dy2;
+      }
+
+      for(var i=0,len=ballObjects.length;i<len;i++){
+        ballObjects[i].cx += ballObjects[i].dx;
+
+      }
+      if(ballObjects[0] != undefined ){
+        if(ballObjects[0].cx > 820){
+          structure.hit++;
+          buildSmallBalls();
+          removeBall();
+          ballExplode();
+          ballObjects.splice(0,1);
+          for(i=0,len=ballObjects.length;i<len;i++){
+            if(i <= 3){
+              ballObjects[i].cx += 30;
+            }
+            if(i == 4){
+              ballObjects[i].cy -= 30
+            }
+          }
+          setTimeout(removeSmallBalls,500);
+        }
+      }
+      
+      if(structure.hit === 1){
+        if(boardObjectsArr[0].x1 < 840){
+          structureHit1();
+        }
+        else{
+          boardReset();
+          structure.hit = 'top1';
+        }
+      }
+      if(structure.hit === 'top1'){
+        structureHitTop1();
+      }
+      if(structure.hit === 2.1){
+        if(boardObjectsArr[0].x1 < 940){
+          structureHit2();
+        }
+        else{
+          boardReset();
+          structure.hit = 'top2';
+        }
+      }
+      if(structure.hit === 'top2'){
+        structureHitTop2();
+      }
+      if(structure.hit === 3.2){
+        if(boardObjectsArr[2].y1 < 520){
+          structureHit3();
+        }
+        else{
+          boardReset();
+          structure.hit = 'pricessFalling';
+        }
+      }
+      if(structure.hit === 'pricessFalling'){
+        princessFalling();
+      }
+      requestAnimationFrame(animate);
     }
-    if(structure.hit === 'pricessFalling'){
-      princessFalling();
-    }
-    requestAnimationFrame(animate);
   };
 
   requestAnimationFrame(animate);
